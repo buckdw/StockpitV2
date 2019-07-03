@@ -1,4 +1,3 @@
-import fix_yahoo_finance as yf
 import mysql.connector
 import yfinance as yf
 
