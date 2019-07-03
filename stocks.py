@@ -37,9 +37,7 @@ def initialize_table():
         `symbol` varchar(8) NOT NULL DEFAULT '',
         `long_name` varchar(255) NOT NULL DEFAULT '',
         `regular_market_open` float NOT NULL DEFAULT '0',
-        `close` float NOT NULL DEFAULT '0',
         `market_cap` float NOT NULL DEFAULT '0',
-        `eps` float NOT NULL DEFAULT '0',
         `forward_pe` float NOT NULL DEFAULT '0',
         `regular_market_price` float NOT NULL DEFAULT '0',
         `regular_market_volume` float NOT NULL DEFAULT '0',
@@ -62,9 +60,7 @@ def insert_stock(quote_dict, mysql_handle):
             symbol,
             long_name,
             regular_market_open,
-            close,
             market_cap,
-            eps,
             forward_pe,
             regular_market_price,
             regular_market_volume,
@@ -84,17 +80,13 @@ def insert_stock(quote_dict, mysql_handle):
             %s,
             %s,
             %s,
-            %s,
-            %s,
             %s
         )
         """
     val = (  quote_dict[SYMBOL]
            , quote_dict[LONG_NAME]
            , quote_dict[REGULAR_MARKET_OPEN]
-           , 0
            , quote_dict[MARKET_CAP]
-           , 0
            , quote_dict[FORWARD_PE]
            , quote_dict[REGULAR_MARKET_PRICE]
            , quote_dict[REGULAR_MARKET_VOLUME]
