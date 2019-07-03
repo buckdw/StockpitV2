@@ -69,7 +69,6 @@ def upsert_stock(quote_dict, mysql_handle):
 
 
 def update_stock(quote_dict, mysql_handle):
-    print(quote_dict[SYMBOL], quote_dict[LONG_NAME])
     mysql_cursor = mysql_handle.cursor()
     sql = """
         UPDATE nasdaq
