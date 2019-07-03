@@ -21,7 +21,7 @@ def initialize_sql():
 def drop_table():
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        DROP TABLE `nasdaq`
+        DROP TABLE IF EXISTS `nasdaq`
         """
     mysql_cursor.execute(sql)
     mysql_cursor.close()
