@@ -19,20 +19,21 @@ def initialize_sql():
     return mysql.connector.connect(host="localhost", user="root", passwd="j0sepace", database="stockpit")
 
 
-def drop_table():
+def drop_table(table):
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        DROP TABLE IF EXISTS `nasdaq`
+        DROP TABLE IF EXISTS %s
         """
-    mysql_cursor.execute(sql)
+    val = (table, )
+    mysql_cursor.execute(sql, val)
     mysql_cursor.close()
     return
 
 
-def initialize_table():
+def initialize_table(table):
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        CREATE TABLE `nasdaq` (
+        CREATE TABLE %s (
         `symbol` varchar(8) NOT NULL DEFAULT '',
         `long_name` varchar(255) NOT NULL DEFAULT '',
         `regular_market_open` float NOT NULL DEFAULT '0',
@@ -48,15 +49,16 @@ def initialize_table():
         PRIMARY KEY (`symbol`)
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
         """
-    mysql_cursor.execute(sql)
+    val = (table,)
+    mysql_cursor.execute(sql, table)
     mysql_cursor.close()
     return
 
 
-def insert_stock(quote_dict, mysql_handle):
+def insert_stock(quote_dict, mysql_handle, table):
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        INSERT INTO nasdaq (
+        INSERT INTO %s (
             symbol,
             long_name,
             regular_market_open,
@@ -85,7 +87,8 @@ def insert_stock(quote_dict, mysql_handle):
             %s
         )
         """
-    val = (quote_dict[SYMBOL]
+    val = (table
+           , quote_dict[SYMBOL]
            , quote_dict[LONG_NAME]
            , quote_dict[REGULAR_MARKET_OPEN]
            , 0
@@ -104,29 +107,29 @@ def insert_stock(quote_dict, mysql_handle):
     return
 
 
-def upsert_stock(quote_dict, mysql_handle):
+def upsert_stock(quote_dict, mysql_handle, table):
     mysql_cursor = mysql_handle.cursor()
     sql = """
         SELECT *
-          FROM nasdaq
+          FROM %s
          WHERE symbol = %s
         """
-    val = (quote_dict[SYMBOL], )
+    val = (table, quote_dict[SYMBOL], )
     mysql_cursor.execute(sql, val)
     record = mysql_cursor.fetchone()
     mysql_handle.commit()
     mysql_cursor.close()
     if record is None:
-        insert_stock(quote_dict, mysql_handle)
+        insert_stock(quote_dict, mysql_handle, table)
         return
-    update_stock(quote_dict, mysql_handle)
+    update_stock(quote_dict, mysql_handle, table)
     return
 
 
-def update_stock(quote_dict, mysql_handle):
+def update_stock(quote_dict, mysql_handle, table):
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        UPDATE nasdaq
+        UPDATE %s
            SET long_name = %s,
                regular_market_open = %s,
                market_cap = %s,
@@ -138,7 +141,8 @@ def update_stock(quote_dict, mysql_handle):
                average_daily_volume_10_day = %s
          WHERE symbol = %s
         """
-    val = (quote_dict[LONG_NAME]
+    val = (table
+           , quote_dict[LONG_NAME]
            , quote_dict[REGULAR_MARKET_OPEN]
            , quote_dict[MARKET_CAP]
            , quote_dict[FORWARD_PE]
@@ -155,20 +159,20 @@ def update_stock(quote_dict, mysql_handle):
     return
 
 
-def retrieve_stocks(stocks, mysql_handle):
+def retrieve_stocks(stocks, mysql_handle, table):
     for stock in stocks:
         quote = yf.Ticker(stock)
         quote_dict = quote.info
-        upsert_stock(quote_dict, mysql_handle)
+        upsert_stock(quote_dict, mysql_handle, table)
         print(quote_dict)
         print("-------------------")
     return
 
-
+table = 'nasdaq'
 stocks = ["SSYS", "DDD", "AAPL", "DASTY", "AMAT", "KLAC", "SBUX", "NXPI", "SHOP", "SIFY", "GE", "KO"]
 mysql_handle = initialize_sql()
-drop_table()
-initialize_table()
-retrieve_stocks(stocks, mysql_handle)
+drop_table(table)
+initialize_table(table)
+retrieve_stocks(stocks, mysql_handle, table)
 
 
