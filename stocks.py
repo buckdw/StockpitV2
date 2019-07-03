@@ -16,6 +16,36 @@ def initialize_sql():
     return mysql.connector.connect(host="localhost", user="root", passwd="j0sepace", database="stockpit")
 
 
+def drop_table():
+    mysql_cursor = mysql_handle.cursor()
+    sql = """
+        DROP TABLE `nasdaq`
+        """
+    mysql_cursor.execute(sql)
+    mysql_cursor.close()
+    return
+
+
+def initialize_table():
+    mysql_cursor = mysql_handle.cursor()
+    sql = """
+        CREATE TABLE `nasdaq` (
+        `symbol` varchar(8) NOT NULL DEFAULT '',
+        `long_name` varchar(255) NOT NULL DEFAULT '',
+        `regular_market_open` float NOT NULL DEFAULT '0',
+        `close` float NOT NULL DEFAULT '0',
+        `market_cap` float NOT NULL DEFAULT '0',
+        `eps` float NOT NULL DEFAULT '0',
+        `forward_eps` float NOT NULL DEFAULT '0',
+        `regular_market_price` float NOT NULL DEFAULT '0',
+        PRIMARY KEY (`symbol`)
+        ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+        """
+    mysql_cursor.execute(sql)
+    mysql_cursor.close()
+    return
+
+
 def insert_stock(quote_dict, mysql_handle):
     mysql_cursor = mysql_handle.cursor()
     sql = """
@@ -110,6 +140,8 @@ def retrieve_stocks(stocks, mysql_handle):
 
 stocks = ["SSYS", "DDD", "AAPL", "DASTY", "AMAT", "KLAC", "SBUX", "NXPI"]
 mysql_handle = initialize_sql()
+drop_table()
+initialize_table()
 retrieve_stocks(stocks, mysql_handle)
 
 
