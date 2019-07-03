@@ -11,7 +11,7 @@ MARKET_CAP = u'marketCap'
 FORWARD_PE = u'forwardPE'
 
 
-def initialize_sql()
+def initialize_sql():
     return mysql.connector.connect(host="localhost", user="root", passwd="j0sepace", database="stockpit")
 
 
