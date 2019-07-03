@@ -47,6 +47,7 @@ def insert_stock(quote_dict, mysql_handle):
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
+    mysql_cursor.close()
     return
 
 
@@ -61,6 +62,7 @@ def upsert_stock(quote_dict, mysql_handle):
     mysql_cursor.execute(sql, val)
     record = mysql_cursor.fetchone()
     mysql_handle.commit()
+    mysql_cursor.close()
     if record is None:
         insert_stock(quote_dict, mysql_handle)
         return
@@ -85,6 +87,7 @@ def update_stock(quote_dict, mysql_handle):
            , quote_dict[SYMBOL])
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
+    mysql_cursor.close()
     return
 
 
