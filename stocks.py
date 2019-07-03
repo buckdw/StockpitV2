@@ -10,17 +10,13 @@ SHARES_OUTSTANING = u'sharesOutstanding'
 MARKET_CAP = u'marketCap'
 FORWARD_PE = u'forwardPE'
 
-mysql_handle = mysql.connector.connect(
-                               host="localhost",
-                               user="root",
-                               passwd="j0sepace",
-                               database="stockpit"
-                               )
+
+def initialize_sql()
+    return mysql.connector.connect(host="localhost", user="root", passwd="j0sepace", database="stockpit")
+
+
 def update_stock(quote_dict, mysql_handle):
-    print(quote_dict[SYMBOL]
-          , quote_dict[LONG_NAME]
-          , quote_dict[REGULAR_MARKET_VOLUME]
-          )
+    print(quote_dict[SYMBOL], quote_dict[LONG_NAME])
     mysql_cursor = mysql_handle.cursor()
     sql = "UPDATE nasdaq SET long_name = %s, regular_market_open = %s, market_cap = %s, forward_pe = %s WHERE symbol = %s"
     val = (quote_dict[LONG_NAME]
@@ -33,6 +29,7 @@ def update_stock(quote_dict, mysql_handle):
     mysql_handle.commit()
     return
 
+
 def retrieve_stocks(stocks, mysql_handle):
     for stock in stocks:
         quote = yf.Ticker(stock)
@@ -40,7 +37,9 @@ def retrieve_stocks(stocks, mysql_handle):
         update_stock(quote_dict, mysql_handle)
     return
 
+
 stocks = ["SSYS", "DDD", "AAPL", "DASTY"]
+mysql_handle = initialize_sql()
 retrieve_stocks(stocks, mysql_handle)
 
 
