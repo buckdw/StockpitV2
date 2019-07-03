@@ -25,8 +25,8 @@ def update_stock(quote_dict, mysql_handle):
           , quote_dict[MARKET_CAP]
           )
     mysql_cursor = mysql_handle.cursor()
-    sql = "UPDATE nasdaq SET long_name = %s WHERE symbol = %s"
-    val = (quote_dict[LONG_NAME], quote_dict[SYMBOL])
+    sql = "UPDATE nasdaq SET long_name = %s, regular_market_open = %s WHERE symbol = %s"
+    val = (quote_dict[LONG_NAME], quote_dict[REGULAR_MARKET_OPEN], quote_dict[SYMBOL])
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
     return
