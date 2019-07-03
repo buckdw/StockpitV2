@@ -29,7 +29,7 @@ def drop_table():
     return
 
 
-def initialize_table(table):
+def initialize_table():
     mysql_cursor = mysql_handle.cursor()
     sql = """
         CREATE TABLE nasdaq(
