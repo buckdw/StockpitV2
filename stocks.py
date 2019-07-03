@@ -97,7 +97,7 @@ def retrieve_stocks(stocks, mysql_handle):
     return
 
 
-stocks = ["SSYS", "DDD", "AAPL", "DASTY"]
+stocks = ["SSYS", "DDD", "AAPL", "DASTY", "AMAT", "KLAC"]
 mysql_handle = initialize_sql()
 retrieve_stocks(stocks, mysql_handle)
 
