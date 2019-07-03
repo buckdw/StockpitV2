@@ -1,4 +1,3 @@
-import mysql.connector
 import yfinance as yf
 
 stocks = ["SSYS", "DDD", "AAPL", "DASTY"]
