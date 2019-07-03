@@ -9,6 +9,7 @@ AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
 SHARES_OUTSTANING = u'sharesOutstanding'
 MARKET_CAP = u'marketCap'
 FORWARD_PE = u'forwardPE'
+REGULAR_MARKET_PRICE = u'regularMarketPrice'
 
 
 def initialize_sql():
@@ -25,9 +26,11 @@ def insert_stock(quote_dict, mysql_handle):
             close,
             market_cap,
             eps,
-            forward_pe
+            forward_pe,
+            regular_market_price
         )
         VALUES (
+            %s,
             %s,
             %s,
             %s,
@@ -44,6 +47,7 @@ def insert_stock(quote_dict, mysql_handle):
            , quote_dict[MARKET_CAP]
            , 0
            , quote_dict[FORWARD_PE]
+           , quote_dict[REGULAR_MARKET_PRICE]
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
@@ -77,14 +81,17 @@ def update_stock(quote_dict, mysql_handle):
            SET long_name = %s,
                regular_market_open = %s,
                market_cap = %s,
-               forward_pe = %s
+               forward_pe = %s,
+               regular_market_price = %s
          WHERE symbol = %s
         """
     val = (quote_dict[LONG_NAME]
            , quote_dict[REGULAR_MARKET_OPEN]
            , quote_dict[MARKET_CAP]
            , quote_dict[FORWARD_PE]
-           , quote_dict[SYMBOL])
+           , quote_dict[REGULAR_MARKET_PRICE]
+           , quote_dict[SYMBOL]
+           )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
     mysql_cursor.close()
