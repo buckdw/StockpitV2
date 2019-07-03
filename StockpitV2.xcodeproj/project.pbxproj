@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		920FE18522CCE276004F938A /* stocks.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = stocks.py; sourceTree = "<group>"; };
+		9292BC0122CCF12A006DA1BA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -15,6 +16,7 @@
 			isa = PBXGroup;
 			children = (
 				920FE18522CCE276004F938A /* stocks.py */,
+				9292BC0122CCF12A006DA1BA /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
