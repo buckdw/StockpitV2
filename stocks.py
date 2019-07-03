@@ -12,6 +12,7 @@ FORWARD_PE = u'forwardPE'
 REGULAR_MARKET_PRICE = u'regularMarketPrice'
 FIFTY_TWO_WEEK_LOW = u'fiftyTwoWeekLow'
 FIFTY_DAY_AVERAGE = u'fiftyDayAverage'
+AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
 
 
 def initialize_sql():
@@ -43,6 +44,7 @@ def initialize_table():
         `regular_market_volume` float NOT NULL DEFAULT '0',
         `fifty_two_week_low` float NOT NULL DEFAULT '0',
         `fifty_day_average` float NOT NULL DEFAULT '0',
+        `average_daily_volume_10_day` float NOT NULL DEFAULT '0',
         PRIMARY KEY (`symbol`)
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
         """
@@ -65,9 +67,11 @@ def insert_stock(quote_dict, mysql_handle):
             regular_market_price,
             regular_market_volume,
             fifty_two_week_low,
-            fifty_two_week_average
+            fifty_day_average,
+            average_daily_volume_10_day
         )
         VALUES (
+            %s,
             %s,
             %s,
             %s,
@@ -92,6 +96,7 @@ def insert_stock(quote_dict, mysql_handle):
            , quote_dict[REGULAR_MARKET_VOLUME]
            , quote_dict[FIFTY_TWO_WEEK_LOW]
            , quote_dict[FIFTY_DAY_AVERAGE]
+           , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
@@ -129,7 +134,8 @@ def update_stock(quote_dict, mysql_handle):
                regular_market_price = %s,
                regular_market_volume = %s,
                fifty_two_week_low = %s,
-               fifty_day_average = %s
+               fifty_day_average = %s,
+               average_daily_volume_10_day = %s
          WHERE symbol = %s
         """
     val = (quote_dict[LONG_NAME]
@@ -140,6 +146,7 @@ def update_stock(quote_dict, mysql_handle):
            , quote_dict[REGULAR_MARKET_VOLUME]
            , quote_dict[FIFTY_TWO_WEEK_LOW]
            , quote_dict[FIFTY_DAY_AVERAGE]
+           , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
            , quote_dict[SYMBOL]
            )
     mysql_cursor.execute(sql, val)
