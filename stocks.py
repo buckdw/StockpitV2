@@ -42,7 +42,7 @@ def initialize_table():
         `regular_market_price` float NOT NULL DEFAULT '0',
         `regular_market_volume` float NOT NULL DEFAULT '0',
         `fifty_two_week_low` float NOT NULL DEFAULT '0',
-        `fifty_day_average float NOT NULL DEFAULT '0',
+        `fifty_day_average` float NOT NULL DEFAULT '0',
         PRIMARY KEY (`symbol`)
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
         """
