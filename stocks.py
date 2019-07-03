@@ -96,6 +96,8 @@ def retrieve_stocks(stocks, mysql_handle):
         quote = yf.Ticker(stock)
         quote_dict = quote.info
         upsert_stock(quote_dict, mysql_handle)
+        print(quote_dict)
+        print("-------------------")
     return
 
 
