@@ -9,6 +9,7 @@ CREATE TABLE `nasdaq` (
 `market_cap` float NOT NULL DEFAULT '0',
 `eps` float NOT NULL DEFAULT '0',
 `forward_eps` float NOT NULL DEFAULT '0',
+`regular_market_price` float NOT NULL DEFAULT '0',
 PRIMARY KEY (`symbol`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
