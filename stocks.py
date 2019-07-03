@@ -38,7 +38,6 @@ def retrieve_stocks(stocks, mysql_handle):
         quote = yf.Ticker(stock)
         quote_dict = quote.info
         update_stock(quote_dict, mysql_handle)
-        print(quote_dict)
     return
 
 stocks = ["SSYS", "DDD", "AAPL", "DASTY"]
