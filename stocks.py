@@ -8,6 +8,7 @@ REGULAR_MARKET_OPEN = u'regularMarketOpen'
 AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
 SHARES_OUTSTANING = u'sharesOutstanding'
 MARKET_CAP = u'marketCap'
+FORWARD_PE = u'forwardPE'
 
 mysql_handle = mysql.connector.connect(
                                host="localhost",
@@ -19,16 +20,13 @@ def update_stock(quote_dict, mysql_handle):
     print(quote_dict[SYMBOL]
           , quote_dict[LONG_NAME]
           , quote_dict[REGULAR_MARKET_VOLUME]
-          , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
-          , quote_dict[REGULAR_MARKET_OPEN]
-          , quote_dict[SHARES_OUTSTANING]
-          , quote_dict[MARKET_CAP]
           )
     mysql_cursor = mysql_handle.cursor()
-    sql = "UPDATE nasdaq SET long_name = %s, regular_market_open = %s, market_cap = %s WHERE symbol = %s"
+    sql = "UPDATE nasdaq SET long_name = %s, regular_market_open = %s, market_cap = %s, forward_pe = %s WHERE symbol = %s"
     val = (quote_dict[LONG_NAME]
            , quote_dict[REGULAR_MARKET_OPEN]
            , quote_dict[MARKET_CAP]
+           , quote_dict[FORWARD_PE]
            , quote_dict[SYMBOL]
            )
     mysql_cursor.execute(sql, val)
