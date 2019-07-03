@@ -11,6 +11,7 @@ MARKET_CAP = u'marketCap'
 FORWARD_PE = u'forwardPE'
 REGULAR_MARKET_PRICE = u'regularMarketPrice'
 FIFTY_TWO_WEEK_LOW = u'fiftyTwoWeekLow'
+FIFTY_TWO_WEEK_HIGH = u'fiftyTwoWeekHigh'
 FIFTY_DAY_AVERAGE = u'fiftyDayAverage'
 AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
 
@@ -32,7 +33,7 @@ def drop_table():
 def initialize_table():
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        CREATE TABLE nasdaq(
+        CREATE TABLE nasdaq (
         `symbol` varchar(8) NOT NULL DEFAULT '',
         `long_name` varchar(255) NOT NULL DEFAULT '',
         `regular_market_open` float NOT NULL DEFAULT '0',
@@ -43,6 +44,7 @@ def initialize_table():
         `regular_market_price` float NOT NULL DEFAULT '0',
         `regular_market_volume` float NOT NULL DEFAULT '0',
         `fifty_two_week_low` float NOT NULL DEFAULT '0',
+        `fifty_two_week_high` float NOT NULL DEFAULT '0',
         `fifty_day_average` float NOT NULL DEFAULT '0',
         `average_daily_volume_10_day` float NOT NULL DEFAULT '0',
         PRIMARY KEY (`symbol`)
@@ -67,10 +69,12 @@ def insert_stock(quote_dict, mysql_handle):
             regular_market_price,
             regular_market_volume,
             fifty_two_week_low,
+            fifty_two_week_high,
             fifty_day_average,
             average_daily_volume_10_day
         )
         VALUES (
+            %s,
             %s,
             %s,
             %s,
@@ -95,6 +99,7 @@ def insert_stock(quote_dict, mysql_handle):
            , quote_dict[REGULAR_MARKET_PRICE]
            , quote_dict[REGULAR_MARKET_VOLUME]
            , quote_dict[FIFTY_TWO_WEEK_LOW]
+           , quote_dict[FIFTY_TWO_WEEK_HIGH]
            , quote_dict[FIFTY_DAY_AVERAGE]
            , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
            )
@@ -134,6 +139,7 @@ def update_stock(quote_dict, mysql_handle):
                regular_market_price = %s,
                regular_market_volume = %s,
                fifty_two_week_low = %s,
+               fifty_two_week_high = %s,
                fifty_day_average = %s,
                average_daily_volume_10_day = %s
          WHERE symbol = %s
@@ -145,6 +151,7 @@ def update_stock(quote_dict, mysql_handle):
            , quote_dict[REGULAR_MARKET_PRICE]
            , quote_dict[REGULAR_MARKET_VOLUME]
            , quote_dict[FIFTY_TWO_WEEK_LOW]
+           , quote_dict[FIFTY_TWO_WEEK_HIGH]
            , quote_dict[FIFTY_DAY_AVERAGE]
            , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
            , quote_dict[SYMBOL]
