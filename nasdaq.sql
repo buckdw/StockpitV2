@@ -12,10 +12,5 @@ CREATE TABLE `nasdaq` (
 PRIMARY KEY (`symbol`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-insert into `nasdaq` values('AAPL','Apple Inc.','203.28','0','936688000000','0','0'),
-('SSYS','Stratasys Ltd.','27.36','0','1494160000','0','0'),
-('DASTY','Dassault SystËmes SE','164.628','0','43373200000','0','0'),
-('DDD','3D Systems Corporation','8.9','0','1051390000','0','0');
-
 SET FOREIGN_KEY_CHECKS = 1;
 
