@@ -35,6 +35,7 @@ def validate_quote_dict(quote_dict):
     quote_dict_clean[EPS_TRAILING_TWELVE_MONTH] = quote_dict[EPS_TRAILING_TWELVE_MONTH] if EPS_TRAILING_TWELVE_MONTH in quote_dict else 0
     quote_dict_clean[REGULAR_MARKET_CHANGE] = quote_dict[REGULAR_MARKET_CHANGE] if REGULAR_MARKET_CHANGE in quote_dict else 0
     quote_dict_clean[EPS_FORWARD] = quote_dict[EPS_FORWARD] if EPS_FORWARD in quote_dict else 0
+    quote_dict_clean[SHARES_OUTSTANING] = quote_dict[SHARES_OUTSTANING] if SHARES_OUTSTANING in quote_dict else 0
     return quote_dict_clean
 
 
@@ -70,6 +71,7 @@ def initialize_table():
         `eps_trailing_twelve_month` float NOT NULL DEFAULT '0',
         `regular_market_change` float NOT NULL DEFAULT '0',
         `eps_forward` float NOT NULL DEFAULT '0',
+        `shares_outstanding` decimal NOT NULL DEFAULT '0',
         PRIMARY KEY (`symbol`)
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
         """
@@ -95,9 +97,11 @@ def insert_stock(quote_dict, mysql_handle):
             average_daily_volume_10_day,
             eps_trailing_twelve_month,
             regular_market_change,
-            eps_forward
+            eps_forward,
+            shares_outstanding
             )
         VALUES (
+            %s,
             %s,
             %s,
             %s,
@@ -129,6 +133,7 @@ def insert_stock(quote_dict, mysql_handle):
            , quote_dict_clean[EPS_TRAILING_TWELVE_MONTH]
            , quote_dict_clean[REGULAR_MARKET_CHANGE]
            , quote_dict_clean[EPS_FORWARD]
+           , quote_dict_clean[SHARES_OUTSTANING]
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
@@ -171,7 +176,8 @@ def update_stock(quote_dict, mysql_handle):
                average_daily_volume_10_day = %s,
                eps_trailing_twelve_month = %s,
                regular_market_change = %s,
-               eps_forward = %s
+               eps_forward = %s,
+               shares_outstanding = %s
          WHERE symbol = %s
         """
     quote_dict_clean = validate_quote_dict(quote_dict)
@@ -188,6 +194,7 @@ def update_stock(quote_dict, mysql_handle):
            , quote_dict_clean[EPS_FORWARD]
            , quote_dict_clean[REGULAR_MARKET_CHANGE]
            , quote_dict_clean[EPS_FORWARD]
+           , quote_dict_clean[SHARES_OUTSTANING]
            , quote_dict_clean[SYMBOL]
            )
     mysql_cursor.execute(sql, val)
