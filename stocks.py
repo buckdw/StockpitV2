@@ -163,17 +163,18 @@ def update_stock(quote_dict, mysql_handle):
 def retrieve_stocks(stocks, mysql_handle):
     for stock in stocks:
         quote = yf.Ticker(stock)
-        quote_dict = quote.info
-        upsert_stock(quote_dict, mysql_handle)
-        print(quote_dict)
-        print("-------------------")
+        if quote:
+            quote_dict = quote.info
+            upsert_stock(quote_dict, mysql_handle)
+            print(quote_dict)
+            print("-------------------")
     return
 
 stocks = [  "SSYS", "DDD",  "AAPL", "DASTY"
           , "AMAT", "KLAC", "SBUX", "NXPI"
           , "SHOP", "SIFY", "GE",   "KO"
           , "RHT",  "IBM",  "AMZN", "ORCL"
-          , "HPQ",  "HPE",  "MSCC"
+          , "HPQ",  "HPE"
           ]
 mysql_handle = initialize_sql()
 drop_table()
