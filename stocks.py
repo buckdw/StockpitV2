@@ -40,7 +40,11 @@ def validate_quote_dict(quote_dict):
 
 
 def initialize_sql():
-    return mysql.connector.connect(host="localhost", user="root", passwd="j0sepace", database="stockpit")
+    return mysql.connector.connect(host="localhost"
+                                   , user="root"
+                                   , passwd="j0sepace"
+                                   , database="stockpit"
+                                   )
 
 
 def drop_table():
