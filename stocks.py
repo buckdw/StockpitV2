@@ -141,12 +141,17 @@ def update_stock(quote_dict, mysql_handle):
                eps_trailing_twelve_month = %s
          WHERE symbol = %s
         """
+    regular_market_open = quote_dict[REGULAR_MARKET_OPEN] if REGULAR_MARKET_OPEN in REGULAR_MARKET_OPEN else 0
+    market_cap = quote_dict[MARKET_CAP] if MARKET_CAP in quote_dict else 0
+    forward_pe = quote_dict[FORWARD_PE] if FORWARD_PE in quote_dict else 0
+    regular_market_price = quote_dict[REGULAR_MARKET_PRICE] if REGULAR_MARKET_PRICE in quote_dict else 0
+    regular_market_volume = quote_dict[REGULAR_MARKET_VOLUME] if REGULAR_MARKET_VOLUME in quote_dict else 0
     val = (  quote_dict[LONG_NAME]
-           , quote_dict[REGULAR_MARKET_OPEN]
-           , quote_dict[MARKET_CAP]
-           , quote_dict[FORWARD_PE]
-           , quote_dict[REGULAR_MARKET_PRICE]
-           , quote_dict[REGULAR_MARKET_VOLUME]
+           , regular_market_open
+           , market_cap
+           , forward_pe
+           , regular_market_price
+           , regular_market_volume
            , quote_dict[FIFTY_TWO_WEEK_LOW]
            , quote_dict[FIFTY_TWO_WEEK_HIGH]
            , quote_dict[FIFTY_DAY_AVERAGE]
@@ -175,6 +180,7 @@ stocks = [  "SSYS", "DDD",  "AAPL", "DASTY"
           , "SHOP", "SIFY", "GE",   "KO"
           , "RHT",  "IBM",  "AMZN", "ORCL"
           , "HPQ",  "HPE",  "A",    "KEYS"
+          , "ELF",  "SSP"
           ]
 mysql_handle = initialize_sql()
 drop_table()
