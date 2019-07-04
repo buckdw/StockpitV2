@@ -15,6 +15,8 @@ FIFTY_TWO_WEEK_HIGH = u'fiftyTwoWeekHigh'
 FIFTY_DAY_AVERAGE = u'fiftyDayAverage'
 AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
 EPS_TRAILING_TWELVE_MONTH = u'epsTrailingTwelveMonths'
+REGULAR_MARKET_CHANGE = u'regularMarketChange'
+
 
 def initialize_sql():
     return mysql.connector.connect(host="localhost", user="root", passwd="j0sepace", database="stockpit")
@@ -46,6 +48,7 @@ def initialize_table():
         `fifty_day_average` float NOT NULL DEFAULT '0',
         `average_daily_volume_10_day` float NOT NULL DEFAULT '0',
         `eps_trailing_twelve_month` float NOT NULL DEFAULT '0',
+        `regular_market_change` float NOT NULL DEFAULT '0',
         PRIMARY KEY (`symbol`)
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
         """
@@ -69,9 +72,11 @@ def insert_stock(quote_dict, mysql_handle):
             fifty_two_week_high,
             fifty_day_average,
             average_daily_volume_10_day,
-            eps_trailing_twelve_month
-        )
+            eps_trailing_twelve_month,
+            regular_market_change
+            )
         VALUES (
+            %s,
             %s,
             %s,
             %s,
@@ -98,6 +103,7 @@ def insert_stock(quote_dict, mysql_handle):
            , quote_dict[FIFTY_DAY_AVERAGE]
            , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
            , quote_dict[EPS_TRAILING_TWELVE_MONTH]
+           , quote_dict[REGULAR_MARKET_CHANGE]
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
@@ -138,7 +144,8 @@ def update_stock(quote_dict, mysql_handle):
                fifty_two_week_high = %s,
                fifty_day_average = %s,
                average_daily_volume_10_day = %s,
-               eps_trailing_twelve_month = %s
+               eps_trailing_twelve_month = %s,
+               regular_market_change = %s
          WHERE symbol = %s
         """
     long_name = quote_dict[LONG_NAME] if LONG_NAME in quote_dict else 0
@@ -152,6 +159,7 @@ def update_stock(quote_dict, mysql_handle):
     fifty_day_average = quote_dict[FIFTY_DAY_AVERAGE] if FIFTY_DAY_AVERAGE in quote_dict else 0
     average_daily_volume_10_day = quote_dict[AVERAGE_DAILY_VOLUME_10DAY] if AVERAGE_DAILY_VOLUME_10DAY in quote_dict else 0
     eps_trailing_twelve_month = quote_dict[EPS_TRAILING_TWELVE_MONTH] if EPS_TRAILING_TWELVE_MONTH in quote_dict else 0
+    REGULAR_MARKET_CHANGE = quote_dict[REGULAR_MARKET_CHANGE] if REGULAR_MARKET_CHANGE in quote_dict else 0
     val = (  quote_dict[LONG_NAME]
            , regular_market_open
            , market_cap
@@ -163,6 +171,7 @@ def update_stock(quote_dict, mysql_handle):
            , fifty_day_average
            , average_daily_volume_10_day
            , eps_trailing_twelve_month
+           , regular_market_change
            , quote_dict[SYMBOL]
            )
     mysql_cursor.execute(sql, val)
