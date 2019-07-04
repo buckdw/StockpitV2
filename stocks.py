@@ -118,22 +118,21 @@ def insert_stock(quote_dict, mysql_handle):
             %s
         )
         """
-    quote_dict_clean = validate_quote_dict(quote_dict)
-    val = (  quote_dict_clean[SYMBOL]
-           , quote_dict_clean[LONG_NAME]
-           , quote_dict_clean[REGULAR_MARKET_OPEN]
-           , quote_dict_clean[MARKET_CAP]
-           , quote_dict_clean[FORWARD_PE]
-           , quote_dict_clean[REGULAR_MARKET_PRICE]
-           , quote_dict_clean[REGULAR_MARKET_VOLUME]
-           , quote_dict_clean[FIFTY_TWO_WEEK_LOW]
-           , quote_dict_clean[FIFTY_TWO_WEEK_HIGH]
-           , quote_dict_clean[FIFTY_DAY_AVERAGE]
-           , quote_dict_clean[AVERAGE_DAILY_VOLUME_10DAY]
-           , quote_dict_clean[EPS_TRAILING_TWELVE_MONTH]
-           , quote_dict_clean[REGULAR_MARKET_CHANGE]
-           , quote_dict_clean[EPS_FORWARD]
-           , quote_dict_clean[SHARES_OUTSTANING]
+    val = (  quote_dict[SYMBOL]
+           , quote_dict[LONG_NAME]
+           , quote_dict[REGULAR_MARKET_OPEN]
+           , quote_dict[MARKET_CAP]
+           , quote_dict[FORWARD_PE]
+           , quote_dict[REGULAR_MARKET_PRICE]
+           , quote_dict[REGULAR_MARKET_VOLUME]
+           , quote_dict[FIFTY_TWO_WEEK_LOW]
+           , quote_dict[FIFTY_TWO_WEEK_HIGH]
+           , quote_dict[FIFTY_DAY_AVERAGE]
+           , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
+           , quote_dict[EPS_TRAILING_TWELVE_MONTH]
+           , quote_dict[REGULAR_MARKET_CHANGE]
+           , quote_dict[EPS_FORWARD]
+           , quote_dict[SHARES_OUTSTANING]
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
@@ -180,22 +179,21 @@ def update_stock(quote_dict, mysql_handle):
                shares_outstanding = %s
          WHERE symbol = %s
         """
-    quote_dict_clean = validate_quote_dict(quote_dict)
-    val = (  quote_dict_clean[LONG_NAME]
-           , quote_dict_clean[REGULAR_MARKET_OPEN]
-           , quote_dict_clean[MARKET_CAP]
-           , quote_dict_clean[FORWARD_PE]
-           , quote_dict_clean[REGULAR_MARKET_PRICE]
-           , quote_dict_clean[REGULAR_MARKET_VOLUME]
-           , quote_dict_clean[FIFTY_TWO_WEEK_LOW]
-           , quote_dict_clean[FIFTY_TWO_WEEK_HIGH]
-           , quote_dict_clean[FIFTY_DAY_AVERAGE]
-           , quote_dict_clean[AVERAGE_DAILY_VOLUME_10DAY]
-           , quote_dict_clean[EPS_FORWARD]
-           , quote_dict_clean[REGULAR_MARKET_CHANGE]
-           , quote_dict_clean[EPS_FORWARD]
-           , quote_dict_clean[SHARES_OUTSTANING]
-           , quote_dict_clean[SYMBOL]
+    val = (  quote_dict[LONG_NAME]
+           , quote_dict[REGULAR_MARKET_OPEN]
+           , quote_dict[MARKET_CAP]
+           , quote_dict[FORWARD_PE]
+           , quote_dict[REGULAR_MARKET_PRICE]
+           , quote_dict[REGULAR_MARKET_VOLUME]
+           , quote_dict[FIFTY_TWO_WEEK_LOW]
+           , quote_dict[FIFTY_TWO_WEEK_HIGH]
+           , quote_dict[FIFTY_DAY_AVERAGE]
+           , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
+           , quote_dict[EPS_FORWARD]
+           , quote_dict[REGULAR_MARKET_CHANGE]
+           , quote_dict[EPS_FORWARD]
+           , quote_dict[SHARES_OUTSTANING]
+           , quote_dict[SYMBOL]
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
@@ -207,7 +205,7 @@ def retrieve_stocks(stocks, mysql_handle):
     for stock in stocks:
         quote = yf.Ticker(stock)
         if quote:
-            quote_dict = quote.info
+            quote_dict = validate_quote_dict(quote.info)
             upsert_stock(quote_dict, mysql_handle)
             print(quote_dict)
             print("-------------------")
@@ -218,7 +216,9 @@ stocks = [  "SSYS", "DDD",  "AAPL", "DASTY"
           , "SHOP", "SIFY", "GE",   "KO"
           , "RHT",  "IBM",  "AMZN", "ORCL"
           , "HPQ",  "HPE",  "A",    "KEYS"
-          , "ELF",  "SSP"
+          , "ELF",  "SSP",  "ASML", "ADBE"
+          , "ADSK", "AMD",  "CSCO", "EA"
+          , "EBAY", "INTC", "INTU", "MCHP"
           ]
 mysql_handle = initialize_sql()
 drop_table()
