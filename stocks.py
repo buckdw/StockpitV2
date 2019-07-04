@@ -9,7 +9,6 @@ AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
 SHARES_OUTSTANING = u'sharesOutstanding'
 MARKET_CAP = u'marketCap'
 FORWARD_PE = u'forwardPE'
-TRAILING_PE = u'trailingPE'
 REGULAR_MARKET_PRICE = u'regularMarketPrice'
 FIFTY_TWO_WEEK_LOW = u'fiftyTwoWeekLow'
 FIFTY_TWO_WEEK_HIGH = u'fiftyTwoWeekHigh'
@@ -39,7 +38,6 @@ def initialize_table():
         `long_name` varchar(255) NOT NULL DEFAULT '',
         `regular_market_open` float NOT NULL DEFAULT '0',
         `market_cap` float NOT NULL DEFAULT '0',
-        `trailing_pe` float NOT NULL DEFAULT '0',
         `forward_pe` float NOT NULL DEFAULT '0',
         `regular_market_price` float NOT NULL DEFAULT '0',
         `regular_market_volume` float NOT NULL DEFAULT '0',
@@ -64,7 +62,6 @@ def insert_stock(quote_dict, mysql_handle):
             long_name,
             regular_market_open,
             market_cap,
-            trailing_pe,
             forward_pe,
             regular_market_price,
             regular_market_volume,
@@ -86,7 +83,6 @@ def insert_stock(quote_dict, mysql_handle):
             %s,
             %s,
             %s,
-            %s,
             %s
         )
         """
@@ -94,7 +90,6 @@ def insert_stock(quote_dict, mysql_handle):
            , quote_dict[LONG_NAME]
            , quote_dict[REGULAR_MARKET_OPEN]
            , quote_dict[MARKET_CAP]
-           , quote_dict[TRAILING_PE]
            , quote_dict[FORWARD_PE]
            , quote_dict[REGULAR_MARKET_PRICE]
            , quote_dict[REGULAR_MARKET_VOLUME]
@@ -136,7 +131,6 @@ def update_stock(quote_dict, mysql_handle):
            SET long_name = %s,
                regular_market_open = %s,
                market_cap = %s,
-               trailing_pe = %s,
                forward_pe = %s,
                regular_market_price = %s,
                regular_market_volume = %s,
@@ -150,7 +144,6 @@ def update_stock(quote_dict, mysql_handle):
     val = (  quote_dict[LONG_NAME]
            , quote_dict[REGULAR_MARKET_OPEN]
            , quote_dict[MARKET_CAP]
-           , quote_dict[TRAILING_PE]
            , quote_dict[FORWARD_PE]
            , quote_dict[REGULAR_MARKET_PRICE]
            , quote_dict[REGULAR_MARKET_VOLUME]
