@@ -14,7 +14,7 @@ FIFTY_TWO_WEEK_LOW = u'fiftyTwoWeekLow'
 FIFTY_TWO_WEEK_HIGH = u'fiftyTwoWeekHigh'
 FIFTY_DAY_AVERAGE = u'fiftyDayAverage'
 AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
-
+EPS_TRAILING_TWELVE_MONTH = u'epsTrailingTwelveMonths'
 
 def initialize_sql():
     return mysql.connector.connect(host="localhost", user="root", passwd="j0sepace", database="stockpit")
@@ -45,6 +45,7 @@ def initialize_table():
         `fifty_two_week_high` float NOT NULL DEFAULT '0',
         `fifty_day_average` float NOT NULL DEFAULT '0',
         `average_daily_volume_10_day` float NOT NULL DEFAULT '0',
+        `eps_trailing_twelve_month` float NOT NULL DEFAULT '0',
         PRIMARY KEY (`symbol`)
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
         """
@@ -67,9 +68,11 @@ def insert_stock(quote_dict, mysql_handle):
             fifty_two_week_low,
             fifty_two_week_high,
             fifty_day_average,
-            average_daily_volume_10_day
+            average_daily_volume_10_day,
+            eps_trailing_twelve_month
         )
         VALUES (
+            %s,
             %s,
             %s,
             %s,
@@ -94,6 +97,7 @@ def insert_stock(quote_dict, mysql_handle):
            , quote_dict[FIFTY_TWO_WEEK_HIGH]
            , quote_dict[FIFTY_DAY_AVERAGE]
            , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
+           , quote_dict[EPS_TRAILING_TWELVE_MONTH]
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
@@ -133,7 +137,8 @@ def update_stock(quote_dict, mysql_handle):
                fifty_two_week_low = %s,
                fifty_two_week_high = %s,
                fifty_day_average = %s,
-               average_daily_volume_10_day = %s
+               average_daily_volume_10_day = %s,
+               eps_trailing_twelve_month = %s
          WHERE symbol = %s
         """
     val = (  quote_dict[LONG_NAME]
@@ -146,6 +151,7 @@ def update_stock(quote_dict, mysql_handle):
            , quote_dict[FIFTY_TWO_WEEK_HIGH]
            , quote_dict[FIFTY_DAY_AVERAGE]
            , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
+           , quote_dict[EPS_TRAILING_TWELVE_MONTH]
            , quote_dict[SYMBOL]
            )
     mysql_cursor.execute(sql, val)
@@ -166,7 +172,8 @@ def retrieve_stocks(stocks, mysql_handle):
 stocks = [  "SSYS", "DDD",  "AAPL", "DASTY"
           , "AMAT", "KLAC", "SBUX", "NXPI"
           , "SHOP", "SIFY", "GE",   "KO"
-          , "RHT",  "IBM",  "AMZN"
+          , "RHT",  "IBM",  "AMZN", "ORCL"
+          , "HPQ",  "HPE"
           ]
 mysql_handle = initialize_sql()
 drop_table()
