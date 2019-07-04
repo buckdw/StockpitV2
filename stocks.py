@@ -16,6 +16,26 @@ FIFTY_DAY_AVERAGE = u'fiftyDayAverage'
 AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
 EPS_TRAILING_TWELVE_MONTH = u'epsTrailingTwelveMonths'
 REGULAR_MARKET_CHANGE = u'regularMarketChange'
+EPS_FORWARD = u'epsForward'
+
+
+def validate_quote_dict(quote_dict):
+    quote_dict_clean = {}
+    quote_dict_clean[SYMBOL] = quote_dict[SYMBOL] if LONG_NAME in quote_dict else ''
+    quote_dict_clean[LONG_NAME] = quote_dict[LONG_NAME] if LONG_NAME in quote_dict else ''
+    quote_dict_clean[REGULAR_MARKET_OPEN] = quote_dict[REGULAR_MARKET_OPEN] if REGULAR_MARKET_OPEN in quote_dict else 0
+    quote_dict_clean[MARKET_CAP] = quote_dict[MARKET_CAP] if MARKET_CAP in quote_dict else 0
+    quote_dict_clean[FORWARD_PE] = quote_dict[FORWARD_PE] if FORWARD_PE in quote_dict else 0
+    quote_dict_clean[REGULAR_MARKET_PRICE] = quote_dict[REGULAR_MARKET_PRICE] if REGULAR_MARKET_PRICE in quote_dict else 0
+    quote_dict_clean[REGULAR_MARKET_VOLUME]  = quote_dict[REGULAR_MARKET_VOLUME] if REGULAR_MARKET_VOLUME in quote_dict else 0
+    quote_dict_clean[FIFTY_TWO_WEEK_LOW] = quote_dict[FIFTY_TWO_WEEK_LOW] if FIFTY_TWO_WEEK_LOW in quote_dict else 0
+    quote_dict_clean[FIFTY_TWO_WEEK_HIGH] = quote_dict[FIFTY_TWO_WEEK_HIGH] if FIFTY_TWO_WEEK_HIGH in quote_dict else 0
+    quote_dict_clean[FIFTY_DAY_AVERAGE] = quote_dict[FIFTY_DAY_AVERAGE] if FIFTY_DAY_AVERAGE in quote_dict else 0
+    quote_dict_clean[AVERAGE_DAILY_VOLUME_10DAY] = quote_dict[AVERAGE_DAILY_VOLUME_10DAY] if AVERAGE_DAILY_VOLUME_10DAY in quote_dict else 0
+    quote_dict_clean[EPS_TRAILING_TWELVE_MONTH] = quote_dict[EPS_TRAILING_TWELVE_MONTH] if EPS_TRAILING_TWELVE_MONTH in quote_dict else 0
+    quote_dict_clean[REGULAR_MARKET_CHANGE] = quote_dict[REGULAR_MARKET_CHANGE] if REGULAR_MARKET_CHANGE in quote_dict else 0
+    quote_dict_clean[EPS_FORWARD] = quote_dict[EPS_FORWARD] if EPS_FORWARD in quote_dict else 0
+    return quote_dict_clean
 
 
 def initialize_sql():
@@ -49,6 +69,7 @@ def initialize_table():
         `average_daily_volume_10_day` float NOT NULL DEFAULT '0',
         `eps_trailing_twelve_month` float NOT NULL DEFAULT '0',
         `regular_market_change` float NOT NULL DEFAULT '0',
+        `eps_forward` float NOT NULL DEFAULT '0',
         PRIMARY KEY (`symbol`)
         ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
         """
@@ -73,9 +94,11 @@ def insert_stock(quote_dict, mysql_handle):
             fifty_day_average,
             average_daily_volume_10_day,
             eps_trailing_twelve_month,
-            regular_market_change
+            regular_market_change,
+            eps_forward
             )
         VALUES (
+            %s,
             %s,
             %s,
             %s,
@@ -91,19 +114,21 @@ def insert_stock(quote_dict, mysql_handle):
             %s
         )
         """
-    val = (  quote_dict[SYMBOL]
-           , quote_dict[LONG_NAME]
-           , quote_dict[REGULAR_MARKET_OPEN]
-           , quote_dict[MARKET_CAP]
-           , quote_dict[FORWARD_PE]
-           , quote_dict[REGULAR_MARKET_PRICE]
-           , quote_dict[REGULAR_MARKET_VOLUME]
-           , quote_dict[FIFTY_TWO_WEEK_LOW]
-           , quote_dict[FIFTY_TWO_WEEK_HIGH]
-           , quote_dict[FIFTY_DAY_AVERAGE]
-           , quote_dict[AVERAGE_DAILY_VOLUME_10DAY]
-           , quote_dict[EPS_TRAILING_TWELVE_MONTH]
-           , quote_dict[REGULAR_MARKET_CHANGE]
+    quote_dict_clean = validate_quote_dict(quote_dict)
+    val = (  quote_dict_clean[SYMBOL]
+           , quote_dict_clean[LONG_NAME]
+           , quote_dict_clean[REGULAR_MARKET_OPEN]
+           , quote_dict_clean[MARKET_CAP]
+           , quote_dict_clean[FORWARD_PE]
+           , quote_dict_clean[REGULAR_MARKET_PRICE]
+           , quote_dict_clean[REGULAR_MARKET_VOLUME]
+           , quote_dict_clean[FIFTY_TWO_WEEK_LOW]
+           , quote_dict_clean[FIFTY_TWO_WEEK_HIGH]
+           , quote_dict_clean[FIFTY_DAY_AVERAGE]
+           , quote_dict_clean[AVERAGE_DAILY_VOLUME_10DAY]
+           , quote_dict_clean[EPS_TRAILING_TWELVE_MONTH]
+           , quote_dict_clean[REGULAR_MARKET_CHANGE]
+           , quote_dict_clean[EPS_FORWARD]
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
@@ -145,34 +170,25 @@ def update_stock(quote_dict, mysql_handle):
                fifty_day_average = %s,
                average_daily_volume_10_day = %s,
                eps_trailing_twelve_month = %s,
-               regular_market_change = %s
+               regular_market_change = %s,
+               eps_forward = %s
          WHERE symbol = %s
         """
-    long_name = quote_dict[LONG_NAME] if LONG_NAME in quote_dict else 0
-    regular_market_open = quote_dict[REGULAR_MARKET_OPEN] if REGULAR_MARKET_OPEN in quote_dict else 0
-    market_cap = quote_dict[MARKET_CAP] if MARKET_CAP in quote_dict else 0
-    forward_pe = quote_dict[FORWARD_PE] if FORWARD_PE in quote_dict else 0
-    regular_market_price = quote_dict[REGULAR_MARKET_PRICE] if REGULAR_MARKET_PRICE in quote_dict else 0
-    regular_market_volume = quote_dict[REGULAR_MARKET_VOLUME] if REGULAR_MARKET_VOLUME in quote_dict else 0
-    fifty_two_week_low = quote_dict[FIFTY_TWO_WEEK_LOW] if FIFTY_TWO_WEEK_LOW in quote_dict else 0
-    fifty_two_week_high = quote_dict[FIFTY_TWO_WEEK_HIGH] if FIFTY_TWO_WEEK_HIGH in quote_dict else 0
-    fifty_day_average = quote_dict[FIFTY_DAY_AVERAGE] if FIFTY_DAY_AVERAGE in quote_dict else 0
-    average_daily_volume_10_day = quote_dict[AVERAGE_DAILY_VOLUME_10DAY] if AVERAGE_DAILY_VOLUME_10DAY in quote_dict else 0
-    eps_trailing_twelve_month = quote_dict[EPS_TRAILING_TWELVE_MONTH] if EPS_TRAILING_TWELVE_MONTH in quote_dict else 0
-    REGULAR_MARKET_CHANGE = quote_dict[REGULAR_MARKET_CHANGE] if REGULAR_MARKET_CHANGE in quote_dict else 0
-    val = (  quote_dict[LONG_NAME]
-           , regular_market_open
-           , market_cap
-           , forward_pe
-           , regular_market_price
-           , regular_market_volume
-           , fifty_two_week_low
-           , fifty_two_week_high
-           , fifty_day_average
-           , average_daily_volume_10_day
-           , eps_trailing_twelve_month
-           , regular_market_change
-           , quote_dict[SYMBOL]
+    quote_dict_clean = validate_quote_dict(quote_dict)
+    val = (  quote_dict_clean[LONG_NAME]
+           , quote_dict_clean[REGULAR_MARKET_OPEN]
+           , quote_dict_clean[MARKET_CAP]
+           , quote_dict_clean[FORWARD_PE]
+           , quote_dict_clean[REGULAR_MARKET_PRICE]
+           , quote_dict_clean[REGULAR_MARKET_VOLUME]
+           , quote_dict_clean[FIFTY_TWO_WEEK_LOW]
+           , quote_dict_clean[FIFTY_TWO_WEEK_HIGH]
+           , quote_dict_clean[FIFTY_DAY_AVERAGE]
+           , quote_dict_clean[AVERAGE_DAILY_VOLUME_10DAY]
+           , quote_dict_clean[EPS_FORWARD]
+           , quote_dict_clean[REGULAR_MARKET_CHANGE]
+           , quote_dict_clean[EPS_FORWARD]
+           , quote_dict_clean[SYMBOL]
            )
     mysql_cursor.execute(sql, val)
     mysql_handle.commit()
