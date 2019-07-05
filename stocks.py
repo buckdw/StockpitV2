@@ -1,5 +1,6 @@
 import yfinance as yf
 import mysql.connector
+import json
 
 REGULAR_MARKET_VOLUME = u'regularMarketVolume'
 SYMBOL = u'symbol'
@@ -211,8 +212,9 @@ def retrieve_stocks(stocks, mysql_handle):
         if quote:
             quote_dict = validate_quote_dict(quote.info)
             upsert_stock(quote_dict, mysql_handle)
-            print(quote_dict)
+            print(json.dumps(quote_dict, indent=4))
             print("-------------------")
+
     return
 
 stocks = [  "SSYS", "DDD",  "AAPL", "DASTY"
