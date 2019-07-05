@@ -227,6 +227,7 @@ stocks = [  "SSYS", "DDD",  "AAPL", "DASTY"
           , "EBAY", "INTC", "INTU", "MCHP"
           , "AMRN", "GOOG", "ROKU", "MU"
           , "VEON", "FB"  , "SIRI", "OCUL"
+          , "RTN",  "HII"
           ]
 mysql_handle = initialize_sql()
 drop_table()
