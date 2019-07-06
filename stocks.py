@@ -207,28 +207,29 @@ def update_stock(quote_dict, mysql_handle):
 
 
 def retrieve_stocks(stocks, mysql_handle):
+    i = 0
     for stock in stocks:
         quote = yf.Ticker(stock)
         if quote:
             quote_dict = validate_quote_dict(quote.info)
             upsert_stock(quote_dict, mysql_handle)
-            print(json.dumps(quote_dict, indent=4))
-            print("-------------------")
-
+            #   print("-------------------")
+            print(stock)
+            print(i)
+            #   print(json.dumps(quote_dict, indent=4))
+            #   print("-------------------")
+        i = i + 1
     return
 
-stocks = [  "SSYS", "DDD",  "AAPL", "DASTY"
-          , "AMAT", "KLAC", "SBUX", "NXPI"
-          , "SHOP", "SIFY", "GE",   "KO"
-          , "RHT",  "IBM",  "AMZN", "ORCL"
-          , "HPQ",  "HPE",  "A",    "KEYS"
-          , "ELF",  "SSP",  "ASML", "ADBE"
-          , "ADSK", "AMD",  "CSCO", "EA"
-          , "EBAY", "INTC", "INTU", "MCHP"
-          , "AMRN", "GOOG", "ROKU", "MU"
-          , "VEON", "FB"  , "SIRI", "OCUL"
-          , "RTN",  "HII"
-          ]
+
+def load_stocks():
+    stocks = list()
+    with open('stocks.txt') as stock_file:
+        for line in stock_file:
+            stocks.append(line)
+    return stocks
+
+stocks = load_stocks()
 mysql_handle = initialize_sql()
 drop_table()
 initialize_table()
