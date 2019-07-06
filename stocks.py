@@ -207,18 +207,15 @@ def update_stock(quote_dict, mysql_handle):
 
 
 def retrieve_stocks(stocks, mysql_handle):
-    i = 0
     for stock in stocks:
         quote = yf.Ticker(stock)
         if quote:
             quote_dict = validate_quote_dict(quote.info)
             upsert_stock(quote_dict, mysql_handle)
             #   print("-------------------")
-            print(stock)
-            print(i)
+            #   print(stock)
             #   print(json.dumps(quote_dict, indent=4))
             #   print("-------------------")
-        i = i + 1
     return
 
 
