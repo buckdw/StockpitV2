@@ -218,6 +218,18 @@ def retrieve_stocks(stocks, mysql_handle):
             #   print("-------------------")
     return
 
+def remove_stocks(stocks, mysql_handle):
+    mysql_cursor = mysql_handle.cursor()
+    sql = """
+        DELETE
+          FROM nasdaq
+         WHERE market_cap = 0
+        """
+    mysql_cursor.execute(sql)
+    mysql_handle.commit()
+    mysql_cursor.close()
+    return
+
 
 def load_stocks():
     stocks = list()
@@ -231,5 +243,5 @@ mysql_handle = initialize_sql()
 drop_table()
 initialize_table()
 retrieve_stocks(stocks, mysql_handle)
-
+remove_stocks(stocks, mysql_handle)
 
