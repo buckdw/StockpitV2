@@ -218,12 +218,17 @@ def retrieve_stocks(stocks, mysql_handle):
             #   print("-------------------")
     return
 
+#
+#   throw out noise
+#       companies without market cap are worthless
+#       remove penny stocks
+#
 def remove_stocks(stocks, mysql_handle):
     mysql_cursor = mysql_handle.cursor()
     sql = """
         DELETE
           FROM nasdaq
-         WHERE market_cap = 0
+         WHERE market_cap < 100000
         """
     mysql_cursor.execute(sql)
     mysql_handle.commit()
