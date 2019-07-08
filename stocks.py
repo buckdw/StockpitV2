@@ -228,9 +228,9 @@ def retrieve_stocks(stocks, mysql_handle):
             #   print(json.dumps(quote_dict, indent=4))
             #   print("-------------------")
     print("-------------------------------")
-    print "Stocks={:d}".format(stock_count)
-    print "Network response average={:4.2f}".format((average_response_network * 1000 * 1000) / stock_count)
-    print "SQL response average={:4.2f}".format((average_response_sql * 1000 * 1000) / stock_count)
+    print("Stocks={:d}".format(stock_count))
+    print("Network response average={:4.2f}".format((average_response_network * 1000 * 1000) / stock_count))
+    print("SQL response average={:4.2f}".format((average_response_sql * 1000 * 1000) / stock_count))
     print("-------------------------------")
     return
 
