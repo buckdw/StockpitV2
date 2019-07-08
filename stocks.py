@@ -2,6 +2,8 @@ import yfinance as yf
 import mysql.connector
 import json
 import time
+import argparse
+
 
 REGULAR_MARKET_VOLUME = u'regularMarketVolume'
 SYMBOL = u'symbol'
@@ -252,17 +254,26 @@ def remove_stocks(stocks, mysql_handle):
     return
 
 
-def load_stocks():
+def load_stocks(stock_filename):
     stocks = list()
-    with open('stocks.txt') as stock_file:
+    with open(stock_filename) as stock_file:
         for line in stock_file:
             stocks.append(line)
     return stocks
 
-stocks = load_stocks()
-mysql_handle = initialize_sql()
-# drop_table()
-initialize_table()
-retrieve_stocks(stocks, mysql_handle)
-remove_stocks(stocks, mysql_handle)
+
+#
+#   main code
+#
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--file', type=str, required=True)
+    args = parser.parse_args()
+
+    stocks = load_stocks(args.file)
+    mysql_handle = initialize_sql()
+    # drop_table()
+    initialize_table()
+    retrieve_stocks(stocks, mysql_handle)
+    remove_stocks(stocks, mysql_handle)
 
