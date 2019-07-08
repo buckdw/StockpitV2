@@ -208,26 +208,30 @@ def update_stock(quote_dict, mysql_handle):
 
 
 def retrieve_stocks(stocks, mysql_handle):
-    average_response = 0
+    average_response_network = 0
+    average_response_sql = 0
     stock_count = 0
     for stock in stocks:
         time_start = time.clock()
         quote = yf.Ticker(stock)
-        time_delta = time.clock() - time_start
-        average_response = average_response + time_delta
+        time_delta_network = time.clock() - time_start
+        average_response_network = average_response_network + time_delta_network
         stock_count = stock_count + 1
-        #        print "Network response time={:4.2f} Average={:4.2f}".format(time_delta * 1000 * 1000, (average_response * 1000 * 1000) / stock_count)
         if quote:
             quote_dict = validate_quote_dict(quote.info)
             time_start = time.clock()
             upsert_stock(quote_dict, mysql_handle)
-            time_delta = time.clock() - time_start
-            # print "SQL response time={:4.2f}".format(time_delta * 1000 * 1000)
-
+            time_delta_sql = time.clock() - time_start
+            average_response_sql = average_response_sql + time_delta_sql
             #   print("-------------------")
             #   print(stock)
             #   print(json.dumps(quote_dict, indent=4))
             #   print("-------------------")
+    print("-------------------------------")
+    print "Stocks={0}".format(str(stock_count))
+    print "Network response average={:4.2f}".format((average_response_network * 1000) / stock_count)
+    print "SQL response average={:4.2f}".format((average_response_sql * 1000) / stock_count)
+    print("-------------------------------")
     return
 
 #
