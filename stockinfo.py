@@ -1,10 +1,7 @@
-import yfinance as yf
 import mysql.connector
 import json
 import time
 import argparse
-
-from yahoo_fin.stock_info import *
 
 def initialize_sql():
     return mysql.connector.connect(host="localhost"
