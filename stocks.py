@@ -1,6 +1,7 @@
 import yfinance as yf
 import mysql.connector
 import json
+import time
 
 REGULAR_MARKET_VOLUME = u'regularMarketVolume'
 SYMBOL = u'symbol'
@@ -207,8 +208,15 @@ def update_stock(quote_dict, mysql_handle):
 
 
 def retrieve_stocks(stocks, mysql_handle):
+    average_response = 0
+    stock_count = 0
     for stock in stocks:
+        time_start = time.clock()
         quote = yf.Ticker(stock)
+        time_delta = time.clock() - time_start
+        average_response = average_response + time_delta
+        stock_count = stock_count + 1
+        print "Response={:4.2f} Average={:4.2f}".format(time_delta * 1000 * 1000, (average_response * 1000 * 1000) / stock_count)
         if quote:
             quote_dict = validate_quote_dict(quote.info)
             upsert_stock(quote_dict, mysql_handle)
