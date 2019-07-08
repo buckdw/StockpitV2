@@ -229,8 +229,8 @@ def retrieve_stocks(stocks, mysql_handle):
             #   print("-------------------")
     print("-------------------------------")
     print "Stocks={0}".format(str(stock_count))
-    print "Network response average={:4.2f}".format((average_response_network * 1000) / stock_count)
-    print "SQL response average={:4.2f}".format((average_response_sql * 1000) / stock_count)
+    print "Network response average={:4.2f}".format((average_response_network * 1000 * 1000) / stock_count)
+    print "SQL response average={:4.2f}".format((average_response_sql * 1000 * 1000) / stock_count)
     print("-------------------------------")
     return
 
