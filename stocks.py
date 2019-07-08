@@ -214,7 +214,6 @@ def retrieve_stocks(stocks, mysql_handle):
         time_start = time.clock()
         quote = yf.Ticker(stock)
         time_delta = time.clock() - time_start
-        print (quote.balance_sheet)
         average_response = average_response + time_delta
         stock_count = stock_count + 1
         #        print "Network response time={:4.2f} Average={:4.2f}".format(time_delta * 1000 * 1000, (average_response * 1000 * 1000) / stock_count)
