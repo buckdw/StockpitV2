@@ -52,7 +52,7 @@ def initialize_sql():
 def drop_table():
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        DROP TABLE IF EXISTS nasdaq
+        DROP TABLE IF EXISTS `nasdaq`
         """
     mysql_cursor.execute(sql)
     mysql_cursor.close()
@@ -62,7 +62,7 @@ def drop_table():
 def initialize_table():
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        CREATE TABLE nasdaq (
+        CREATE TABLE IF NOT EXISTS `nasdaq` (
         `symbol` varchar(8) NOT NULL DEFAULT '',
         `long_name` varchar(255) NOT NULL DEFAULT '',
         `regular_market_open` float NOT NULL DEFAULT '0',
@@ -89,7 +89,7 @@ def initialize_table():
 def insert_stock(quote_dict, mysql_handle):
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        INSERT INTO nasdaq (
+        INSERT INTO `nasdaq` (
             symbol,
             long_name,
             regular_market_open,
@@ -150,7 +150,7 @@ def upsert_stock(quote_dict, mysql_handle):
     mysql_cursor = mysql_handle.cursor()
     sql = """
         SELECT *
-          FROM nasdaq
+          FROM `nasdaq`
          WHERE symbol = %s
         """
     val = (quote_dict[SYMBOL], )
@@ -168,7 +168,7 @@ def upsert_stock(quote_dict, mysql_handle):
 def update_stock(quote_dict, mysql_handle):
     mysql_cursor = mysql_handle.cursor()
     sql = """
-        UPDATE nasdaq
+        UPDATE `nasdaq`
            SET long_name = %s,
                regular_market_open = %s,
                market_cap = %s,
@@ -239,7 +239,7 @@ def remove_stocks(stocks, mysql_handle):
     mysql_cursor = mysql_handle.cursor()
     sql = """
         DELETE
-          FROM nasdaq
+          FROM `nasdaq`
          WHERE market_cap < 100000
         """
     mysql_cursor.execute(sql)
@@ -257,7 +257,7 @@ def load_stocks():
 
 stocks = load_stocks()
 mysql_handle = initialize_sql()
-drop_table()
+# drop_table()
 initialize_table()
 retrieve_stocks(stocks, mysql_handle)
 remove_stocks(stocks, mysql_handle)
