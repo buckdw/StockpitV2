@@ -2,6 +2,7 @@ import mysql.connector
 import json
 import time
 import argparse
+from yahoo_fin.stock_info import *
 
 def initialize_sql():
     return mysql.connector.connect(host="localhost"
@@ -15,7 +16,8 @@ def retrieve_stocks(stocks, mysql_handle):
     stock_count = 0
     for stock in stocks:
         time_start = time.clock()
-        #        quote = yf.Ticker(stock)
+        cash_flow = get_cash_flow(stock)
+        print(cash_flow)
         time_delta_network = time.clock() - time_start
         average_response_network = average_response_network + time_delta_network
         stock_count = stock_count + 1

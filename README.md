@@ -3,12 +3,19 @@
 mysql -user root --password=j0sepace
 create catalog Stockpit
 
-sudo pip install yfinance -U
+## general requisites
 sudo pip install mysql-connector-python
 
-sudo pip install yahoo_fin
+## stocks requisites
+sudo pip install yfinance -U
 
-python stocks.py
-python stockinfo.py
+## stockinfo requisites 
+sudo pip install yahoo_fin
+sudo pip install requests_html
+sudo pip install html5lib
+
+## execution
+python stocks.py --file stock.txt
+python stockinfo.py -- file stock.txt
 
 beiden gebruiken stock.txt als invoer bestand
