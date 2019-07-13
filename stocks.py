@@ -225,10 +225,9 @@ def retrieve_stocks(stocks, mysql_handle):
             upsert_stock(quote_dict, mysql_handle)
             time_delta_sql = time.clock() - time_start
             average_response_sql = average_response_sql + time_delta_sql
-            #   print("-------------------")
-            #   print(stock)
-            #   print(json.dumps(quote_dict, indent=4))
-            #   print("-------------------")
+            print("-------------------")
+            print(json.dumps(quote_dict, indent=4))
+            print("-------------------")
     print("-------------------------------")
     print("Stocks={:d}".format(stock_count))
     print("Network response average={:4.2f}".format((average_response_network * 1000 * 1000) / stock_count))
