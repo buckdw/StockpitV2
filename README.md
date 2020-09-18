@@ -9,6 +9,7 @@ sudo pip install mysql-connector-python
 ## stocks requisites
 sudo pip3 install lxml
 sudo pip3 install yfinance -U
+sudo pip3 install regex
 
 ## stockinfo requisites 
 sudo pip3 install yahoo_fin
