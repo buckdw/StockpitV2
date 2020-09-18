@@ -3,6 +3,7 @@ import mysql.connector
 import json
 import time
 import argparse
+import regex as rx
 
 
 REGULAR_MARKET_VOLUME = u'regularMarketVolume'
@@ -23,7 +24,12 @@ REGULAR_MARKET_CHANGE = u'regularMarketChange'
 EPS_FORWARD = u'epsForward'
 
 
+def strdelcc(str):
+    return rx.sub(r'\p{C}', '', str)
+    
+    
 def validate_quote_dict(quote_dict):
+    print(quote_dict)
     quote_dict_clean = {}
     quote_dict_clean[SYMBOL] = quote_dict[SYMBOL] if LONG_NAME in quote_dict else ''
     quote_dict_clean[LONG_NAME] = quote_dict[LONG_NAME] if LONG_NAME in quote_dict else ''
@@ -214,8 +220,10 @@ def retrieve_stocks(stocks, mysql_handle):
     average_response_sql = 0
     stock_count = 0
     for stock in stocks:
+        stock_symbol = strdelcc(stock)
+        print('*** TICKER = ' + stock_symbol)
         time_start = time.perf_counter()
-        quote = yf.Ticker(stock)
+        quote = yf.Ticker(stock_symbol)
         time_delta_network = time.perf_counter() - time_start
         average_response_network = average_response_network + time_delta_network
         stock_count = stock_count + 1
