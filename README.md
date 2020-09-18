@@ -11,10 +11,6 @@ sudo pip3 install lxml
 sudo pip3 install yfinance -U
 sudo pip3 install regex
 
-## stockinfo requisites 
-sudo pip3 install yahoo_fin
-sudo pip3 install requests_html
-sudo pip3 install html5lib
 
 ## execution
 python stocks.py --file stock.txt
