@@ -17,6 +17,8 @@ pip3 install html5lib
 
 pip3 install beautifulSoup4
 
+pip3 install mysql-connector
+
 https://stackoverflow.com/questions/49042224/error-in-reading-html-to-data-frame-in-python-html5lib-not-found
 ## stocks on Mukintosh
 run /Application/Python3.8/Install.certificates for all generic certificate stuff
