@@ -36,7 +36,6 @@ def strdelcc(str):
     
     
 def validate_quote_dict(quote_dict):
-    print(function_id())
     quote_dict_clean = {}
     quote_dict_clean[SYMBOL] = quote_dict[SYMBOL] if LONG_NAME in quote_dict and quote_dict[SYMBOL] else ''
     quote_dict_clean[LONG_NAME] = quote_dict[LONG_NAME] if LONG_NAME in quote_dict and quote_dict[LONG_NAME] else ''
@@ -105,7 +104,6 @@ def initialize_table():
 
 
 def insert_stock(quote_dict, mysql_handle):
-    print(function_id())
     mysql_cursor = mysql_handle.cursor()
     sql = """
         INSERT INTO `nasdaq` (
@@ -166,7 +164,6 @@ def insert_stock(quote_dict, mysql_handle):
 
 
 def upsert_stock(quote_dict, mysql_handle):
-    print(function_id())
     mysql_cursor = mysql_handle.cursor()
     sql = """
         SELECT *
@@ -186,7 +183,6 @@ def upsert_stock(quote_dict, mysql_handle):
 
 
 def update_stock(quote_dict, mysql_handle):
-    print(function_id())
     mysql_cursor = mysql_handle.cursor()
     sql = """
         UPDATE `nasdaq`
