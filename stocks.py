@@ -238,7 +238,8 @@ def retrieve_stocks(stocks, mysql_handle):
             quote_info = quote.info
         except (IndexError, KeyError, ValueError) as e:
             valid_quote = False
-            print('Error = ' + e)
+            print('Error')
+            print(e)
         if valid_quote:
             time_delta_network = time.perf_counter() - time_start
             average_response_network = average_response_network + time_delta_network
