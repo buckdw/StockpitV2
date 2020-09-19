@@ -1,6 +1,6 @@
 # stockpit requisites
 
-mysql -user root --password=Emers0nFitti
+mysql -uroot -pEmers0nFitti
 create database stockpit
 
 ## general requisites
