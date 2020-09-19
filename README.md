@@ -10,6 +10,7 @@ sudo pip install mysql-connector-python
 sudo pip3 install lxml
 sudo pip3 install yfinance -U
 sudo pip3 install regex
+/Application/Python3.8/Install.certificates
 
 
 ## execution
