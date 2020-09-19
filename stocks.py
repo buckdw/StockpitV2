@@ -228,7 +228,7 @@ def retrieve_stocks(stocks, mysql_handle):
     average_response_network = 0
     average_response_sql = 0
     stock_count = 0
-    for stock in stocks:
+    for stock_symbol in stocks:
         print('*** TICKER = ' + stock_symbol)
         time_start = time.perf_counter()
         quote = yf.Ticker(stock_symbol)
