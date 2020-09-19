@@ -10,6 +10,7 @@ import inspect
 REGULAR_MARKET_VOLUME = u'regularMarketVolume'
 SYMBOL = u'symbol'
 LONG_NAME = u'longName'
+REGULAR_MARKET_OPEN = u'regularMarketOpen'
 AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
 SHARES_OUTSTANDING = u'sharesOutstanding'
 MARKET_CAP = u'marketCap'
@@ -39,6 +40,7 @@ def validate_quote_dict(quote_dict):
     quote_dict_clean = {}
     quote_dict_clean[SYMBOL] = quote_dict[SYMBOL] if LONG_NAME in quote_dict and quote_dict[SYMBOL] else ''
     quote_dict_clean[LONG_NAME] = quote_dict[LONG_NAME] if LONG_NAME in quote_dict and quote_dict[LONG_NAME] else ''
+    quote_dict_clean[REGULAR_MARKET_OPEN] = quote_dict[REGULAR_MARKET_OPEN] if REGULAR_MARKET_OPEN in quote_dict and quote_dict[REGULAR_MARKET_OPEN] else 0
     quote_dict_clean[MARKET_CAP] = quote_dict[MARKET_CAP] if MARKET_CAP in quote_dict and quote_dict[MARKET_CAP] else 0
     quote_dict_clean[FORWARD_PE] = quote_dict[FORWARD_PE] if FORWARD_PE in quote_dict and quote_dict[FORWARD_PE] else 0
     quote_dict_clean[REGULAR_MARKET_PRICE] = quote_dict[REGULAR_MARKET_PRICE] if REGULAR_MARKET_PRICE in quote_dict and quote_dict[REGULAR_MARKET_PRICE] else 0
@@ -81,25 +83,7 @@ def initialize_table():
         CREATE TABLE IF NOT EXISTS `nasdaq` (
         `symbol` varchar(8) NOT NULL DEFAULT '',
         `long_name` varchar(255) NOT NULL DEFAULT '',
-        `market_cap` float NOT NULL DEFAULT '0',
-        `forward_pe` float NOT NULL DEFAULT '0',
-        `regular_market_price` float NOT NULL DEFAULT '0',
-        `regular_market_volume` float NOT NULL DEFAULT '0',
-        `fifty_two_week_low` float NOT NULL DEFAULT '0',
-        `fifty_two_week_high` float NOT NULL DEFAULT '0',
-        `fifty_day_average` float NOT NULL DEFAULT '0',
-        `average_daily_volume_10_day` float NOT NULL DEFAULT '0',
-        `eps_trailing_twelve_month` float NOT NULL DEFAULT '0',
-        `regular_market_change` float NOT NULL DEFAULT '0',
-        `eps_forward` float NOT NULL DEFAULT '0',
-        `shares_outstanding` bigint NOT NULL DEFAULT '0',
-        PRIMARY KEY (`symbol`)
-        ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-        """
-    sql = """
-        CREATE TABLE IF NOT EXISTS `nasdaq` (
-        `symbol` varchar(8) NOT NULL DEFAULT '',
-        `long_name` varchar(255) NOT NULL DEFAULT '',
+        `regular_market_open` float NOT NULL DEFAULT '0',
         `market_cap` float NOT NULL DEFAULT '0',
         `forward_pe` float NOT NULL DEFAULT '0',
         `regular_market_price` float NOT NULL DEFAULT '0',
@@ -127,6 +111,7 @@ def insert_stock(quote_dict, mysql_handle):
         INSERT INTO `nasdaq` (
             symbol,
             long_name,
+            regular_market_open,
             market_cap,
             forward_pe,
             regular_market_price,
@@ -154,11 +139,13 @@ def insert_stock(quote_dict, mysql_handle):
             %s,
             %s,
             %s,
+            %s,
             %s
         )
         """
     val = (  quote_dict[SYMBOL]
            , quote_dict[LONG_NAME]
+           , quote_dict[REGULAR_MARKET_OPEN]
            , quote_dict[MARKET_CAP]
            , quote_dict[FORWARD_PE]
            , quote_dict[REGULAR_MARKET_PRICE]
@@ -204,6 +191,7 @@ def update_stock(quote_dict, mysql_handle):
     sql = """
         UPDATE `nasdaq`
            SET long_name = %s,
+               regular_market_open = %s,
                market_cap = %s,
                forward_pe = %s,
                regular_market_price = %s,
@@ -219,6 +207,7 @@ def update_stock(quote_dict, mysql_handle):
          WHERE symbol = %s
         """
     val = (  quote_dict[LONG_NAME]
+           , quote_dict[REGULAR_MARKET_OPEN]
            , quote_dict[MARKET_CAP]
            , quote_dict[FORWARD_PE]
            , quote_dict[REGULAR_MARKET_PRICE]
