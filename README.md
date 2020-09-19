@@ -1,10 +1,10 @@
 # stockpit requisites
 
 mysql -user root --password=Emers0nFitti
-create catalog stockpit
+create database stockpit
 
 ## general requisites
-sudo pip install mysql-connector-python
+sudo pip3 install mysql-connector-python
 
 ## stocks requisites
 sudo pip3 install lxml
@@ -12,11 +12,12 @@ sudo pip3 install yfinance -U
 sudo pip3 install regex
 sudo pip3 install html5lib
 
-/Application/Python3.8/Install.certificates
+## stocks on Mukintosh
+run /Application/Python3.8/Install.certificates for all generic certificate stuff
 
 
 ## execution
-python stocks.py --file stock.txt
-python stockinfo.py -- file stock.txt
+--drop recreates table because of DDL change
+--file contains ticker symbols
 
-beiden gebruiken stock.txt als invoer bestand
+python stocks.py --file stock.txt --drop
