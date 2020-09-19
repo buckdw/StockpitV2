@@ -28,5 +28,5 @@ run /Application/Python3.8/Install.certificates for all generic certificate stuf
 --drop recreates table because of DDL change
 --file contains ticker symbols
 
-python stocks.py --file stock.txt --drop
+python stocks.py --file stocks.txt --drop
 
