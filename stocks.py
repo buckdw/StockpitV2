@@ -223,6 +223,8 @@ def update_stock(quote_dict, mysql_handle):
     mysql_cursor.close()
     return
 
+def retrieve_block_of_stocks(stocks, mysql_cursor):
+    return
 
 def retrieve_stocks(stocks, mysql_handle):
     average_response_network = 0
@@ -310,6 +312,7 @@ if __name__ == '__main__':
 #   for range construction with number of blocks
 #   but first adjust retrieve_stocks to handle a set
 #
-    retrieve_stocks(stocks, mysql_handle)
+    retrieve_block_of_stocks(stock_list, mysql_handle)
+    retrieve_stocks(stock, mysql_handle)
     remove_stocks(stocks, mysql_handle)
 
