@@ -223,10 +223,16 @@ def update_stock(quote_dict, mysql_handle):
     mysql_cursor.close()
     return
 
+
 def retrieve_block_of_stocks(stocks, mysql_cursor):
+    print(function_id())
+    stock_symbols = ''.join(stocks)
+    print(stock_symbols)
     return
 
+
 def retrieve_stocks(stocks, mysql_handle):
+    print(function_id())
     average_response_network = 0
     average_response_sql = 0
     stock_count = 0
