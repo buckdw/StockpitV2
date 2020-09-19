@@ -244,7 +244,6 @@ def retrieve_stocks(stocks, mysql_handle):
             valid_quote = False
             print(e)
         if valid_quote:
-            print(quote_info)
             time_delta_network = time.perf_counter() - time_start
             average_response_network = average_response_network + time_delta_network
             stock_count = stock_count + 1
@@ -254,9 +253,6 @@ def retrieve_stocks(stocks, mysql_handle):
                 upsert_stock(quote_dict_sanatized, mysql_handle)
                 time_delta_sql = time.perf_counter() - time_start
                 average_response_sql = average_response_sql + time_delta_sql
-                print('-------------------')
-                print(json.dumps(quote_dict_sanatized, indent=4))
-                print('-------------------')
     print('-------------------------------')
     print('stocks={:d}'.format(stock_count))
     print('Network response average={:4.2f}'.format((average_response_network * 1000 * 1000) / stock_count))
@@ -297,10 +293,9 @@ def load_stocks(stock_filename):
 #
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--file', type=str, required=True)
+    parser.add_argument('--file', type=str, required=True, help='input file with ticker symbols to retrieve')
     parser.add_argument('--drop', default=False, action='store_true' , help='drop table because of DDL change')
     args = parser.parse_args()
-
     stocks = load_stocks(args.file)
     mysql_handle = initialize_sql()
     if args.drop:
