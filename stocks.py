@@ -226,7 +226,7 @@ def update_stock(quote_dict, mysql_handle):
 
 def retrieve_block_of_stocks(stocks, mysql_cursor):
     print(function_id())
-    stock_symbols = ''.join(stocks)
+    stock_symbols = ' '.join(stocks)
     print(stock_symbols)
     return
 
@@ -319,6 +319,6 @@ if __name__ == '__main__':
 #   but first adjust retrieve_stocks to handle a set
 #
     retrieve_block_of_stocks(stock_list, mysql_handle)
-    retrieve_stocks(stock, mysql_handle)
+    retrieve_stocks(stocks, mysql_handle)
     remove_stocks(stocks, mysql_handle)
 
