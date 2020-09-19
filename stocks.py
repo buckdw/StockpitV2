@@ -228,6 +228,7 @@ def retrieve_block_of_stocks(stocks, mysql_cursor):
     print(function_id())
     stock_symbols = ' '.join(stocks)
     print(stock_symbols)
+    quotes = yf.Tickers(stock_symbols)
     return
 
 
