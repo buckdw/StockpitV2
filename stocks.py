@@ -240,7 +240,7 @@ def retrieve_stocks(stocks, mysql_handle):
         valid_quote = True
         try:
             quote_info = quote.info
-        except (IndexError, KeyError) as e:
+        except (IndexError, KeyError, ValueError) as e:
             valid_quote = False
             print(e)
         if valid_quote:
