@@ -23,3 +23,4 @@ run /Application/Python3.8/Install.certificates for all generic certificate stuf
 --file contains ticker symbols
 
 python stocks.py --file stock.txt --drop
+
