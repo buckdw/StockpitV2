@@ -229,7 +229,6 @@ def retrieve_stocks(stocks, mysql_handle):
     average_response_sql = 0
     stock_count = 0
     for stock in stocks:
-        stock_symbol = strdelcc(stock)
         print('*** TICKER = ' + stock_symbol)
         time_start = time.perf_counter()
         quote = yf.Ticker(stock_symbol)
@@ -281,7 +280,8 @@ def load_stocks(stock_filename):
     stocks = list()
     with open(stock_filename) as stock_file:
         for line in stock_file:
-            stocks.append(line)
+            stock_symbol = strdelcc(line)
+            stocks.append(stock_symbol)
     return stocks
 
 
@@ -294,10 +294,22 @@ if __name__ == '__main__':
     parser.add_argument('--drop', default=False, action='store_true' , help='drop table because of DDL change')
     args = parser.parse_args()
     stocks = load_stocks(args.file)
+#
+#   preparation for getting chunks of stock_size stocks
+#
+    stock_begin = 0
+    stock_end = len(stocks)
+    stock_size = 10
     mysql_handle = initialize_sql()
     if args.drop:
         drop_table()
     initialize_table()
+    stock_list = stocks[stock_begin:stock_begin+10]
+    print(stock_list)
+#
+#   for range construction with number of blocks
+#   but first adjust retrieve_stocks to handle a set
+#
     retrieve_stocks(stocks, mysql_handle)
     remove_stocks(stocks, mysql_handle)
 
