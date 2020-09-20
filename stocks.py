@@ -311,27 +311,26 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--file', type=str, required=True, help='input file with ticker symbols to retrieve')
     parser.add_argument('--drop', default=False, action='store_true' , help='drop table because of DDL change')
+    parser.add_argument('--block', type=int, default=0, required=False, help='restart block seqno')
     args = parser.parse_args()
     stocks = load_stocks(args.file)
 #
 #   preparation for getting chunks of stock_size stocks
 #
-    stock_begin = 0
-    stock_end = len(stocks)
-    stock_block_size = 25
-    stock_blocks = math.floor(stock_end / stock_block_size)
+    elements = len(stocks)
+    block_size = 25
+    block_end = math.floor(elements / block_size)
+    block_begin = args.block
+    print(args.block)
     mysql_handle = initialize_sql()
     if args.drop:
         drop_table()
     initialize_table()
-    print(stock_blocks)
-    for i in range(stock_blocks):
+    print(block_end)
+    for i in range(block_begin, block_end):
         print('----')
         print(i)
-        stock_list = stocks[stock_begin:stock_begin+stock_block_size]
+        stock_list = stocks[block_size * i:block_size * (i + 1)]
         print(stock_list)
         retrieve_block_of_stocks(stock_list, mysql_handle)
-        stock_begin = stock_begin + stock_block_size
-#   retrieve_stocks(stocks, mysql_handle)
-#    remove_stocks(stocks, mysql_handle)
 
