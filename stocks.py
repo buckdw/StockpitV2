@@ -228,6 +228,8 @@ def retrieve_block_of_stocks(stocks, mysql_cursor):
     print(function_id())
     stock_symbols = ' '.join(stocks)
     print(stock_symbols)
+    stock_count = 0
+    time_start = time.perf_counter()
     quotes = yf.Tickers(stock_symbols)
     for quote in quotes.tickers:
         valid_quote = True
@@ -245,9 +247,6 @@ def retrieve_block_of_stocks(stocks, mysql_cursor):
 
 def retrieve_stocks(stocks, mysql_handle):
     print(function_id())
-    average_response_network = 0
-    average_response_sql = 0
-    stock_count = 0
     for stock_symbol in stocks:
         print('*** TICKER = ' + stock_symbol)
         time_start = time.perf_counter()
@@ -260,19 +259,8 @@ def retrieve_stocks(stocks, mysql_handle):
             print('Error')
             print(e)
         if valid_quote:
-            time_delta_network = time.perf_counter() - time_start
-            average_response_network = average_response_network + time_delta_network
-            stock_count = stock_count + 1
             quote_dict_sanatized = validate_quote_dict(quote_info)
-            time_start = time.perf_counter()
             upsert_stock(quote_dict_sanatized, mysql_handle)
-            time_delta_sql = time.perf_counter() - time_start
-            average_response_sql = average_response_sql + time_delta_sql
-    print('-------------------------------')
-    print('stocks={:d}'.format(stock_count))
-    print('Network response average={:4.2f}'.format((average_response_network * 1000 * 1000) / stock_count))
-    print('SQL response average={:4.2f}'.format((average_response_sql * 1000 * 1000) / stock_count))
-    print('-------------------------------')
     return
 
 #
@@ -310,7 +298,7 @@ def load_stocks(stock_filename):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--file', type=str, required=True, help='input file with ticker symbols to retrieve')
-    parser.add_argument('--drop', default=False, action='store_true' , help='drop table because of DDL change')
+    parser.add_argument('--drop', default=False, action='store_true', help='drop table because of DDL change')
     parser.add_argument('--block', type=int, default=0, required=False, help='restart block seqno')
     args = parser.parse_args()
     stocks = load_stocks(args.file)
