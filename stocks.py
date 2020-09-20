@@ -5,7 +5,7 @@ import time
 import argparse
 import regex as rx
 import inspect
-
+import math
 
 REGULAR_MARKET_VOLUME = u'regularMarketVolume'
 SYMBOL = u'symbol'
@@ -229,7 +229,18 @@ def retrieve_block_of_stocks(stocks, mysql_cursor):
     stock_symbols = ' '.join(stocks)
     print(stock_symbols)
     quotes = yf.Tickers(stock_symbols)
-    print (quotes.tickers)
+    for quote in quotes.tickers:
+        valid_quote = True
+        try:
+            quote_info = quote.info
+        except (IndexError, KeyError, ValueError) as e:
+            valid_quote = False
+            print('Error')
+            print(e)
+        if valid_quote:
+            if quote:
+                quote_dict_sanatized = validate_quote_dict(quote_info)
+                upsert_stock(quote_dict_sanatized, mysql_handle)
     return
 
 
@@ -309,18 +320,20 @@ if __name__ == '__main__':
 #
     stock_begin = 0
     stock_end = len(stocks)
-    stock_size = 10
+    stock_block_size = 25
+    stock_blocks = math.floor(stock_end / stock_block_size)
     mysql_handle = initialize_sql()
     if args.drop:
         drop_table()
     initialize_table()
-    stock_list = stocks[stock_begin:stock_begin+10]
-    print(stock_list)
-#
-#   for range construction with number of blocks
-#   but first adjust retrieve_stocks to handle a set
-#
-    retrieve_block_of_stocks(stock_list, mysql_handle)
-    retrieve_stocks(stocks, mysql_handle)
-    remove_stocks(stocks, mysql_handle)
+    print(stock_blocks)
+    for i in range(stock_blocks):
+        print('----')
+        print(i)
+        stock_list = stocks[stock_begin:stock_begin+stock_block_size]
+        print(stock_list)
+        retrieve_block_of_stocks(stock_list, mysql_handle)
+        stock_begin = stock_begin + stock_block_size
+#   retrieve_stocks(stocks, mysql_handle)
+#    remove_stocks(stocks, mysql_handle)
 
