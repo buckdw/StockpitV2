@@ -238,9 +238,8 @@ def retrieve_block_of_stocks(stocks, mysql_cursor):
             print('Error')
             print(e)
         if valid_quote:
-            if quote:
-                quote_dict_sanatized = validate_quote_dict(quote_info)
-                upsert_stock(quote_dict_sanatized, mysql_handle)
+            quote_dict_sanatized = validate_quote_dict(quote_info)
+            upsert_stock(quote_dict_sanatized, mysql_handle)
     return
 
 
@@ -264,12 +263,11 @@ def retrieve_stocks(stocks, mysql_handle):
             time_delta_network = time.perf_counter() - time_start
             average_response_network = average_response_network + time_delta_network
             stock_count = stock_count + 1
-            if quote:
-                quote_dict_sanatized = validate_quote_dict(quote_info)
-                time_start = time.perf_counter()
-                upsert_stock(quote_dict_sanatized, mysql_handle)
-                time_delta_sql = time.perf_counter() - time_start
-                average_response_sql = average_response_sql + time_delta_sql
+            quote_dict_sanatized = validate_quote_dict(quote_info)
+            time_start = time.perf_counter()
+            upsert_stock(quote_dict_sanatized, mysql_handle)
+            time_delta_sql = time.perf_counter() - time_start
+            average_response_sql = average_response_sql + time_delta_sql
     print('-------------------------------')
     print('stocks={:d}'.format(stock_count))
     print('Network response average={:4.2f}'.format((average_response_network * 1000 * 1000) / stock_count))
