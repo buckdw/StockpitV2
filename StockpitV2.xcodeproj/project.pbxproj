@@ -12,6 +12,7 @@
 		9292BC0122CCF12A006DA1BA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DEEAB9BE2517F1E000C75563 /* stocks.nasdaq.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = stocks.nasdaq.txt; sourceTree = "<group>"; };
 		DEEAB9BF2517F1F300C75563 /* stocks.nyse.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = stocks.nyse.txt; sourceTree = "<group>"; };
+		DEEAB9C02517F23500C75563 /* stocks.nasdaq.3D.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = stocks.nasdaq.3D.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -20,6 +21,7 @@
 			children = (
 				DEEAB9BF2517F1F300C75563 /* stocks.nyse.txt */,
 				DEEAB9BE2517F1E000C75563 /* stocks.nasdaq.txt */,
+				DEEAB9C02517F23500C75563 /* stocks.nasdaq.3D.txt */,
 				920FE18522CCE276004F938A /* stocks.py */,
 				922C9A0E22D3A8E0000BDB24 /* stockinfo.py */,
 				9292BC0122CCF12A006DA1BA /* README.md */,
