@@ -303,7 +303,6 @@ if __name__ == '__main__':
     parser.add_argument('--drop', default=False, action='store_true', help='drop table because of DDL change')
     args = parser.parse_args()
     stocks = load_stocks(args.file)
-    elements = len(stocks)
     mysql_handle = initialize_sql()
     if args.drop:
         drop_table()
