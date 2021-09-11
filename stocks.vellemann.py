@@ -82,6 +82,7 @@ def retrieve_stocks(stocks):
             print(e)
         if valid_quote:
             quote_dict_sanatized = validate_quote_dict(quote_info)
+            print(quote_dict_sanatized)
             #
             #   do something
             #
