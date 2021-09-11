@@ -59,7 +59,7 @@ def initialize_sql():
     print(function_id())
     return mysql.connector.connect(host='localhost'
                                    , user='root'
-                                   , passwd='Emers0nFitti'
+                                   , passwd='M8rioAndretti!'
                                    , database='stockpit'
                                    )
 
