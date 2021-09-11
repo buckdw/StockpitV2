@@ -67,7 +67,7 @@ def validate_quote_dict(quote_dict):
     return quote_dict_clean
 
 
-def retrieve_stocks(stocks, mysql_handle):
+def retrieve_stocks(stocks):
     print(function_id())
     for stock_symbol in stocks:
         print('*** TICKER = ' + stock_symbol)
@@ -106,7 +106,6 @@ def load_stocks(stock_filename):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--file', type=str, required=True, help='input file with ticker symbols to retrieve')
-    parser.add_argument('--drop', default=False, action='store_true', help='drop table because of DDL change')
     args = parser.parse_args()
     stocks = load_stocks(args.file)
     retrieve_stocks(stocks)
