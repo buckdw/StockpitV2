@@ -36,6 +36,7 @@ def strdelcc(str):
     
     
 def validate_quote_dict(quote_dict):
+    print(function_id())
     quote_dict_clean = {}
     quote_dict_clean[SYMBOL] = quote_dict[SYMBOL] if LONG_NAME in quote_dict and quote_dict[SYMBOL] else ''
     quote_dict_clean[LONG_NAME] = quote_dict[LONG_NAME] if LONG_NAME in quote_dict and quote_dict[LONG_NAME] else ''
