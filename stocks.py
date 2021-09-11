@@ -286,6 +286,7 @@ def remove_stocks(stocks, mysql_handle):
 def load_stocks(stock_filename):
     print(function_id())
     stocks = list()
+    print(stock_filename)
     with open(stock_filename) as stock_file:
         for line in stock_file:
             stock_symbol = strdelcc(line)
