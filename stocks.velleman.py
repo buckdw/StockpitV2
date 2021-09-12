@@ -24,6 +24,7 @@ AVERAGE_DAILY_VOLUME_10DAY = u'averageDailyVolume10Day'
 EPS_TRAILING_TWELVE_MONTH = u'epsTrailingTwelveMonths'
 REGULAR_MARKET_CHANGE = u'regularMarketChange'
 EPS_FORWARD = u'epsForward'
+PREVIOUS_CLOSE = u'previousClose'
 
 
 def function_id():
@@ -66,6 +67,9 @@ def validate_quote_dict(quote_dict):
         EPS_FORWARD] else 0
     quote_dict_clean[SHARES_OUTSTANDING] = quote_dict[SHARES_OUTSTANDING] if SHARES_OUTSTANDING in quote_dict and \
                                                                              quote_dict[SHARES_OUTSTANDING] else 0
+    quote_dict_clean[PREVIOUS_CLOSE] = quote_dict[PREVIOUS_CLOSE] if PREVIOUS_CLOSE in quote_dict and \
+                                                                             quote_dict[PREVIOUS_CLOSE] else 0
+
     return quote_dict_clean
 
 
@@ -83,6 +87,7 @@ def retrieve_stocks(stocks):
             print(e)
         if valid_quote:
             quote_dict_sanatized = validate_quote_dict(quote_info)
+            print(quote_dict_sanatized)
             stock_quotes.append(quote_dict_sanatized)
     return stock_quotes
 
@@ -134,15 +139,17 @@ if __name__ == '__main__':
                      )
     print(line)
     time.sleep(1)
-#   serial_connection.write(line.encode())
+    serial_connection.write(line.encode())
     index = 0
     page = 'A'
+    pages = ''
     pagenumber = ord(page[0])
+    pages = chr(pagenumber)
     for stock_quote in stock_quotes:
         ticker = stock_quote[SYMBOL]
-        quote_open = float(stock_quote[REGULAR_MARKET_OPEN])
+        previous_close = float(stock_quote[PREVIOUS_CLOSE])
         quote = float(stock_quote[REGULAR_MARKET_PRICE])
-        fluctuation = 100 * (quote - quote_open) / quote_open
+        fluctuation = 100 * (quote - previous_close) / previous_close
         line = send_page(ID00
                          , 1
                          , chr(pagenumber)
@@ -154,6 +161,13 @@ if __name__ == '__main__':
                                                                              )
                          )
         pagenumber += 1
+        pages = pages + chr(pagenumber)
+        print(pages)
         print(line)
- #       time.sleep(1)
- #       serial_connection.write(line.encode())
+        time.sleep(1)
+        serial_connection.write(line.encode())
+    line = link_pages(ID00, pages)
+    print(line)
+    time.sleep(1)
+    serial_connection.write(line.encode())
+    serial_connection.close()
