@@ -135,6 +135,9 @@ if __name__ == '__main__':
     print(line)
     time.sleep(1)
 #   serial_connection.write(line.encode())
+    index = 0
+    page = 'A'
+    pagenumber = ord(page[0])
     for stock_quote in stock_quotes:
         ticker = stock_quote[SYMBOL]
         quote_open = float(stock_quote[REGULAR_MARKET_OPEN])
@@ -142,7 +145,7 @@ if __name__ == '__main__':
         fluctuation = 100 * (quote - quote_open) / quote_open
         line = send_page(ID00
                          , 1
-                         , 'A'
+                         , chr(pagenumber)
                          , COLOR_RED
                          , WAIT_3S
                          , '{ticker}: {quote:.2f} ({fluctuation:.1f}%)'.format(ticker=ticker
@@ -150,6 +153,7 @@ if __name__ == '__main__':
                                                                              , fluctuation=fluctuation
                                                                              )
                          )
+        pagenumber += 1
         print(line)
  #       time.sleep(1)
  #       serial_connection.write(line.encode())
