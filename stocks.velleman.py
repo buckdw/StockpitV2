@@ -3,6 +3,8 @@ import time
 import argparse
 import regex as rx
 import inspect
+import serial
+import serial.tools.list_ports
 
 from velleman import *
 
@@ -102,6 +104,15 @@ def load_stocks(stock_filename):
     return stocks
 
 
+def find_serial_port(filter):
+    ports = serial.tools.list_ports.comports()
+    for port, desc, hwid in sorted(ports):
+        usb_port = str(port)
+        if filter in usb_port:
+            return usb_port
+    return None
+
+
 #
 #   main code
 #
@@ -111,4 +122,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     stocks = load_stocks(args.file)
     retrieve_stocks(stocks)
+    port = find_serial_port("cu.usb")
+    print(port)
+
 
