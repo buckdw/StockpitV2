@@ -124,5 +124,23 @@ if __name__ == '__main__':
     retrieve_stocks(stocks)
     port = find_serial_port("cu.usb")
     print(port)
+    serial_connection = serial.Serial(port
+                                      , baudrate='9600'
+                                      , parity=serial.PARITY_NONE
+                                      , stopbits=1
+                                      , bytesize=serial.EIGHTBITS
+                                      , xonxoff=True
+                                      , rtscts=False
+                                      , dsrdtr=False
+                                      )
+    line = send_page(ID00
+                     , 1
+                     , 'A'
+                     , COLOR_RED
+                     , WAIT_3S
+                     , FUNCTION_SPEED_1
+                     )
+    print(line)
+    time.sleep(1)
 
 
