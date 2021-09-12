@@ -37,7 +37,6 @@ def strdelcc(str):
 
 
 def validate_quote_dict(quote_dict):
-    print(function_id())
     quote_dict_clean = {}
     quote_dict_clean[SYMBOL] = quote_dict[SYMBOL] if LONG_NAME in quote_dict and quote_dict[SYMBOL] else ''
     quote_dict_clean[LONG_NAME] = quote_dict[LONG_NAME] if LONG_NAME in quote_dict and quote_dict[LONG_NAME] else ''
@@ -71,9 +70,8 @@ def validate_quote_dict(quote_dict):
 
 
 def retrieve_stocks(stocks):
-    print(function_id())
+    stock_quotes = []
     for stock_symbol in stocks:
-        print('*** TICKER = ' + stock_symbol)
         time_start = time.perf_counter()
         quote = yf.Ticker(stock_symbol)
         valid_quote = True
@@ -85,12 +83,8 @@ def retrieve_stocks(stocks):
             print(e)
         if valid_quote:
             quote_dict_sanatized = validate_quote_dict(quote_info)
-            print(quote_dict_sanatized)
-            #
-            #   do something
-            #
-    return
-
+            stock_quotes.append(quote_dict_sanatized)
+    return stock_quotes
 
 
 def load_stocks(stock_filename):
@@ -121,7 +115,7 @@ if __name__ == '__main__':
     parser.add_argument('--file', type=str, required=True, help='input file with ticker symbols to retrieve')
     args = parser.parse_args()
     stocks = load_stocks(args.file)
-    retrieve_stocks(stocks)
+    stock_quotes = retrieve_stocks(stocks)
     port = find_serial_port("cu.usb")
     print(port)
     serial_connection = serial.Serial(port
@@ -142,5 +136,22 @@ if __name__ == '__main__':
                      )
     print(line)
     time.sleep(1)
-
-
+#   serial_connection.write(line.encode())
+    for stock_quote in stock_quotes:
+        ticker = stock_quote[SYMBOL]
+        quote_open = float(stock_quote[REGULAR_MARKET_OPEN])
+        quote = float(stock_quote[REGULAR_MARKET_PRICE])
+        fluctuation = 100 * (quote - quote_open) / quote_open
+        line = send_page(ID00
+                         , 1
+                         , 'A'
+                         , COLOR_RED
+                         , WAIT_3S
+                         , '{ticker}: {quote:.2f} ({fluctuation:.1f}%)'.format(ticker=ticker
+                                                                             , quote=quote
+                                                                             , fluctuation=fluctuation
+                                                                             )
+                         )
+        print(line)
+ #       time.sleep(1)
+ #       serial_connection.write(line.encode())
