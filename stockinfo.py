@@ -4,7 +4,6 @@ import time
 import argparse
 
 from yahoo_fin.stock_info import *
-from velleman import *
 
 def initialize_sql():
     return mysql.connector.connect(host="localhost"

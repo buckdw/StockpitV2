@@ -1,9 +1,10 @@
 import yfinance as yf
-import json
 import time
 import argparse
 import regex as rx
 import inspect
+
+from velleman import *
 
 REGULAR_MARKET_VOLUME = u'regularMarketVolume'
 SYMBOL = u'symbol'
