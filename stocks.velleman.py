@@ -88,7 +88,6 @@ def retrieve_stocks(stocks):
 
 
 def load_stocks(stock_filename):
-    print(function_id())
     stocks = list()
     with open(stock_filename) as stock_file:
         for line in stock_file:
@@ -117,7 +116,6 @@ if __name__ == '__main__':
     stocks = load_stocks(args.file)
     stock_quotes = retrieve_stocks(stocks)
     port = find_serial_port("cu.usb")
-    print(port)
     serial_connection = serial.Serial(port
                                       , baudrate='9600'
                                       , parity=serial.PARITY_NONE
