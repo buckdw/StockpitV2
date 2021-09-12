@@ -166,7 +166,7 @@ if __name__ == '__main__':
         print(line)
         time.sleep(1)
         serial_connection.write(line.encode())
-    line = link_pages(ID00, pages)
+    line = link_pages(ID00, pages[:-1])
     print(line)
     time.sleep(1)
     serial_connection.write(line.encode())
