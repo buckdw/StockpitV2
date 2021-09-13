@@ -27,6 +27,22 @@ EPS_FORWARD = u'epsForward'
 PREVIOUS_CLOSE = u'previousClose'
 
 
+def market_volume_symbol(volume):
+    if volume > 1000000:
+        return 'M'
+    if volume > 1000:
+        return 'K'
+    return ''
+
+
+def market_volume(volume):
+    if volume > 1000000:
+        return volume / 1000000
+    if volume > 1000:
+        return volume / 1000
+    return volume
+
+
 def function_id():
     current_frame = inspect.currentframe()
     caller_frame = inspect.getouterframes(current_frame, 2)
@@ -68,7 +84,7 @@ def validate_quote_dict(quote_dict):
     quote_dict_clean[SHARES_OUTSTANDING] = quote_dict[SHARES_OUTSTANDING] if SHARES_OUTSTANDING in quote_dict and \
                                                                              quote_dict[SHARES_OUTSTANDING] else 0
     quote_dict_clean[PREVIOUS_CLOSE] = quote_dict[PREVIOUS_CLOSE] if PREVIOUS_CLOSE in quote_dict and \
-                                                                             quote_dict[PREVIOUS_CLOSE] else 0
+                                                                     quote_dict[PREVIOUS_CLOSE] else 0
 
     return quote_dict_clean
 
@@ -148,16 +164,21 @@ if __name__ == '__main__':
         ticker = stock_quote[SYMBOL]
         previous_close = float(stock_quote[PREVIOUS_CLOSE])
         quote = float(stock_quote[REGULAR_MARKET_PRICE])
+        rmv_v = market_volume(stock_quote[REGULAR_MARKET_VOLUME])
+        rmv_s = market_volume_symbol(stock_quote[REGULAR_MARKET_VOLUME])
         fluctuation = 100 * (quote - previous_close) / previous_close
         line = send_page(ID00
                          , 1
                          , chr(pagenumber)
                          , COLOR_RED
                          , WAIT_3S
-                         , '{ticker}: {quote:.2f} ({fluctuation:.1f}%)'.format(ticker=ticker
-                                                                             , quote=quote
-                                                                             , fluctuation=fluctuation
-                                                                             )
+                         , '{ticker}: ${quote:.2f} {fluctuation:.1f}% {rmv_v}{rmv_s}'.format(ticker=ticker
+                                                                                                , quote=quote
+                                                                                                ,
+                                                                                                fluctuation=fluctuation
+                                                                                                , rmv_v=int(rmv_v)
+                                                                                                , rmv_s=rmv_s
+                                                                                                )
                          )
         pagenumber += 1
         pages = pages + chr(pagenumber)
