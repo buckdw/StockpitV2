@@ -172,7 +172,7 @@ if __name__ == '__main__':
                          , chr(pagenumber)
                          , COLOR_RED
                          , WAIT_3S
-                         , '{ticker}: ${quote:.2f} {fluctuation:.1f}% {rmv_v}{rmv_s}'.format(ticker=ticker
+                         , '{ticker}: ${quote:.2f} {fluctuation:.1f}% {rmv_v:.1f}{rmv_s}'.format(ticker=ticker
                                                                                                 , quote=quote
                                                                                                 ,
                                                                                                 fluctuation=fluctuation
