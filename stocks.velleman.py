@@ -141,9 +141,8 @@ if __name__ == '__main__':
     time.sleep(1)
     serial_connection.write(line.encode())
     index = 0
-    page = 'A'
     pages = ''
-    pagenumber = ord(page[0])
+    pagenumber = ord('A')
     pages = chr(pagenumber)
     for stock_quote in stock_quotes:
         ticker = stock_quote[SYMBOL]
