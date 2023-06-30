@@ -119,7 +119,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     mongo = Mongo("", "", "")
     print(mongo)
-
+    print("***")
 
     stocks = load_stocks(args.file)
     print(retrieve_block_of_stocks)
