@@ -118,6 +118,7 @@ if __name__ == '__main__':
     parser.add_argument('--file', type=str, required=True, help='input file with ticker symbols to retrieve')
     args = parser.parse_args()
     mongo = mongo.Mongo("", "", "")
+    mongo.connect()
     print(mongo)
     print("***")
 

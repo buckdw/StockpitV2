@@ -1,6 +1,11 @@
 from pymongo import MongoClient
 from strenum import StrEnum
 
+DATABASE = "stockpit"
+COLLECTION_NASDAQ = "nasdaq"
+COLLECTION_NYSE = "nyse"
+
+
 class MongoOperator(StrEnum):
     LT = "$lt"
     EXISTS = "$exists"
