@@ -7,6 +7,7 @@ import argparse
 import regex as rx
 import inspect
 import math
+import mongo 
 
 REGULAR_MARKET_VOLUME = u'regularMarketVolume'
 SYMBOL = u'symbol'
