@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from strenum import StrEnum
 
-DATABASE = "stockpit"
+DATABASE_STOCKPIT = "stockpit"
 COLLECTION_NASDAQ = "nasdaq"
 COLLECTION_NYSE = "nyse"
 

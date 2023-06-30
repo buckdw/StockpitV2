@@ -59,27 +59,8 @@ def validate_quote_dict(quote_dict):
 
 
 
-def retrieve_block_of_stocks(stocks):
-    print(function_id())
-    stock_symbols = ' '.join(stocks)
-    print(stock_symbols)
-    stock_count = 0
-    time_start = time.perf_counter()
-    quotes = yf.Tickers(stock_symbols)
-    for quote in quotes.tickers:
-        valid_quote = True
-        try:
-            quote_info = quote.info
-        except (IndexError, KeyError, ValueError) as e:
-            valid_quote = False
-            print('Error')
-            print(e)
-        if valid_quote:
-            quote_dict_sanatized = validate_quote_dict(quote_info)
-    return
 
-
-def retrieve_stocks(stocks):
+def retrieve_stocks(stocks, mongo):
     print(function_id())
     for stock_symbol in stocks:
         print('*** TICKER = ' + stock_symbol)
@@ -94,6 +75,9 @@ def retrieve_stocks(stocks):
             print(e)
         if valid_quote:
             quote_dict_sanatized = validate_quote_dict(quote_info)
+            database = mongo.handle[DATABASE_STOCKPIT]
+            collection = database[COLLECTION_NASDAQ]
+            collection.insert_one(quote_dict_sanatized)
             print(quote_dict_sanatized)
     return
 
@@ -120,9 +104,6 @@ if __name__ == '__main__':
     mongo = mongo.Mongo("", "", "")
     mongo.connect()
     print(mongo)
-    print("***")
-
     stocks = load_stocks(args.file)
-#   print(retrieve_block_of_stocks)
-    retrieve_stocks(stocks)
+    retrieve_stocks(stocks, mongo)
 
