@@ -117,6 +117,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--file', type=str, required=True, help='input file with ticker symbols to retrieve')
     args = parser.parse_args()
+    mongo = Mongo("", "", "")
+    print(mongo)
+
+
     stocks = load_stocks(args.file)
     print(retrieve_block_of_stocks)
     retrieve_stocks(stocks)
