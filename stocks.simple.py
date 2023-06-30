@@ -122,6 +122,6 @@ if __name__ == '__main__':
     print("***")
 
     stocks = load_stocks(args.file)
-    print(retrieve_block_of_stocks)
+#   print(retrieve_block_of_stocks)
     retrieve_stocks(stocks)
 
