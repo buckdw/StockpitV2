@@ -9,6 +9,10 @@ import inspect
 import math
 import mongo 
 
+DATABASE_STOCKPIT = "stockpit"
+COLLECTION_NASDAQ = "nasdaq"
+COLLECTION_NYSE = "nyse"
+
 REGULAR_MARKET_VOLUME = u'regularMarketVolume'
 SYMBOL = u'symbol'
 LONG_NAME = u'longName'
